@@ -5,17 +5,19 @@
 - [A cheatsheet of modern C++ language and library features](https://github.com/AnthonyCalandra/modern-cpp-features)
 - [modern-cpp-tutorial](https://github.com/changkun/modern-cpp-tutorial)
 - [中文的C++ Template的教学指南](https://github.com/wuye9036/CppTemplateTutorial)
+- [Modern CMake for C++](https://github.com/PacktPublishing/Modern-CMake-for-Cpp)
 
 
 ### examples
 
 - [Abseil Common Libraries (C++)](https://github.com/abseil/abseil-cpp)
+- [A template for modern C++ projects](https://github.com/filipdutescu/modern-cpp-template)
 
 
-### perf
+### tools
 
 - [perf-ninja: This is an online course where you can learn to find and fix low-level performance issues, for example CPU cache misses and branch mispredictions](https://github.com/dendibakh/perf-ninja)
-
+- [C++ Insights - See your source code with the eyes of a compiler](https://github.com/andreasfertig/cppinsights)
 
 ### blog
 
