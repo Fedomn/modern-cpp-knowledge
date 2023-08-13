@@ -1,5 +1,7 @@
 cmake-build-debug
 build
+deps
+install
 
 # resources
 resources
