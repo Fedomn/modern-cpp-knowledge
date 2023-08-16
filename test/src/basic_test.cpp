@@ -1,5 +1,45 @@
 #include <gtest/gtest.h>
 
+TEST(BasicTest, BasicVars)
+{
+  int a = 1;
+  double b = 2.0;
+  char c = 'c';
+  std::string d = "af";
+  EXPECT_EQ(a, 1);
+  EXPECT_EQ(b, 2.0);
+  EXPECT_EQ(c, 'c');
+  EXPECT_EQ(d, "af");
+
+  // array
+  std::string cars[4] = { "Volvo", "BMW", "Ford", "Mazda" };
+  EXPECT_EQ(cars[0], "Volvo");
+  int myNum[] = { 10, 20, 30 };
+  for (auto& item : myNum)
+  {
+    item = 1;
+  }
+  EXPECT_EQ(myNum[1], 1);
+
+  // Structures (also called structs) are a way to group several related variables into one place. Each variable in the
+  // structure is known as a member of the structure.
+  struct myStructure
+  {
+    int myNum;
+    std::string myString;
+  };
+  myStructure myObj = { 5, "some string" };
+  EXPECT_EQ(myObj.myNum, 5);
+  EXPECT_EQ(myObj.myString, "some string");
+
+  // pointer
+  std::string food = "Pizza";
+  std::string* ptr = &food;
+  EXPECT_EQ(*ptr, "Pizza");
+  *ptr = "Hamburger";
+  EXPECT_EQ(food, "Hamburger");
+}
+
 TEST(BasicTest, BasicIf)
 {
   std::vector<int> vec = { 1, 2, 3, 4 };
@@ -71,6 +111,7 @@ TEST(BasicTest, RvalueReference_And_LvalueReference)
   std::string lv1 = "string, ";  // lv1 is a lvalue
   // std::string&& r1 = lv1;     // illegal, rvalue can't ref to lvalue
   std::string&& rv1 = std::move(lv1);  // legal, std::move can convert lvalue to rvalue
+  EXPECT_EQ(rv1, "string, ");
 
   const std::string& lv2 = lv1 + lv1;  // legal, const lvalue reference can extend temp variable's lifecycle
 
@@ -89,8 +130,10 @@ TEST(BasicTest, PerfectForwarding)
   int x = 0;      // `x` is a lvalue of type `int`
   auto&& al = x;  // `al` is a lvalue of type `int&` -- binds to the lvalue, `x`
   auto&& ar = 0;  // `ar` is a lvalue of type `int&&` -- binds to the rvalue temporary, `0`
+  EXPECT_EQ(al, 0);
+  EXPECT_EQ(ar, 0);
 
-  auto f = [](auto&& t) {};
+  auto f = [](auto&& t) { return t; };
   int x2 = 0;
   f(0);  // T is int, deduces as f(int &&) => f(int&&)
   f(x);  // T is int&, deduces as f(int& &&) => f(int&)
