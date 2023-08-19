@@ -5,6 +5,7 @@ init:
 	gh repo clone abseil/abseil-cpp resources/abseil-cpp
 	gh repo clone filipdutescu/modern-cpp-template resources/modern-cpp-template
 	gh repo clone PacktPublishing/Modern-CMake-for-Cpp resources/Modern-CMake-for-Cpp
+	gh repo clone adah1972/geek_time_cpp resources/geek_time_cpp
 
 deps:
 	git clone https://github.com/google/googletest.git --branch release-1.11.0 deps/googletest

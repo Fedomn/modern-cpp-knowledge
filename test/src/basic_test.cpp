@@ -1,5 +1,25 @@
 #include <gtest/gtest.h>
 
+TEST(BasicTest, VarsSize)
+{
+  //  A char variable is of the natural size to hold a character on a given machine (typically an 8-bit byte), and the sizes
+  //  of other types are quoted in multiples of the size of a char
+  EXPECT_EQ(sizeof(char), 1);
+  EXPECT_EQ(sizeof(short), 2);
+  EXPECT_EQ(sizeof(int), 4);
+  EXPECT_EQ(sizeof(long), 8);
+  EXPECT_EQ(sizeof(float), 4);
+  EXPECT_EQ(sizeof(double), 8);
+  EXPECT_EQ(sizeof(bool), 1);
+  EXPECT_EQ(sizeof(std::string), 24);
+  EXPECT_EQ(sizeof(std::vector<int>), 24);
+
+  //  narrowing conversions, such as double to int and int to char are allowed and implicitly applied. The problems caused by
+  //  implicit narrowing conversions is a price paid for C compatibility
+  //  int i1 = 5.6;
+  //  EXPECT_EQ(i1, 5);
+}
+
 TEST(BasicTest, BasicVars)
 {
   int a = 1;
