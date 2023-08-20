@@ -1,5 +1,6 @@
 set(sources
     src/tmp.cpp
+    src/vector.cpp
 )
 
 set(exe_sources
@@ -9,6 +10,7 @@ set(exe_sources
 
 set(headers
     include/modern-cpp-knowledge/tmp.hpp
+    include/modern-cpp-knowledge/vector.h
 )
 
 set(test_sources
@@ -16,4 +18,5 @@ set(test_sources
   src/basic_test.cpp
   src/oop_test.cpp
   src/lambda_test.cpp
+  src/vector_test.cpp
 )
