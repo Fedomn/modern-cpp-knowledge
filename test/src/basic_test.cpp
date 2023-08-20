@@ -29,6 +29,7 @@ TEST(BasicTest, Constants)
   // constexpr: meaning roughly ‘‘to be evaluated at compile time.’’ This is used primarily to specify constants, to allow
   // placement of data in read-only memory (where it is unlikely to be corrupted) and for performance
   constexpr int b = 2 * a;
+  EXPECT_EQ(b, 2);
 
   //  一个 constexpr 变量是一个编译时完全确定的常数。
   //  一个 constexpr 函数至少对于某一组实参可以在编译期间产生一个编译期常数。
@@ -79,6 +80,20 @@ TEST(BasicTest, BasicVars)
   EXPECT_EQ(*ptr, "Pizza");
   *ptr = "Hamburger";
   EXPECT_EQ(food, "Hamburger");
+
+  // A union is a struct in which all members are allocated at the same address so that the union occupies only as much space
+  // as its largest member. Naturally, a union can hold a value for only one member at a time
+  union MyValue
+  {
+    int myNum;
+    char* myString;
+  };
+  MyValue myValue = { 2 };
+  EXPECT_EQ(myValue.myNum, 2);
+  std::string string = "some string";
+  myValue.myString = new char[string.length()];
+  strcpy(myValue.myString, string.c_str());
+  EXPECT_EQ(std::string(myValue.myString), "some string");
 }
 
 TEST(BasicTest, BasicIf)
