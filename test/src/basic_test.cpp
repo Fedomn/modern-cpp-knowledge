@@ -20,6 +20,27 @@ TEST(BasicTest, VarsSize)
   //  EXPECT_EQ(i1, 5);
 }
 
+TEST(BasicTest, Constants)
+{
+  // const: meaning roughly ‘‘I promise not to change this value.’’ This is used primarily to specify interfaces, so that
+  // data can be passed to functions without fear of it being modified. The compiler enforces the promise made by const.
+  const int a = 1;
+
+  // constexpr: meaning roughly ‘‘to be evaluated at compile time.’’ This is used primarily to specify constants, to allow
+  // placement of data in read-only memory (where it is unlikely to be corrupted) and for performance
+  constexpr int b = 2 * a;
+
+  //  一个 constexpr 变量是一个编译时完全确定的常数。
+  //  一个 constexpr 函数至少对于某一组实参可以在编译期间产生一个编译期常数。
+  //  一个 constexpr 函数不保证在所有情况下都会产生一个编译期常数（因而也是可以作为普通函数来使用的）。
+
+  //  要检验一个 constexpr 函数能不能产生一个真正的编译期常量，可以把结果赋给一个 constexpr
+  //  变量。成功的话，我们就确认了，至少在这种调用情况下，我们能真正得到一个编译期常量
+  constexpr auto sqr = [](int n) { return n * n; };
+  constexpr int i = sqr(3);
+  EXPECT_EQ(i, 9);
+}
+
 TEST(BasicTest, BasicVars)
 {
   int a = 1;
