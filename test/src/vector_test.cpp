@@ -9,4 +9,7 @@ TEST(VectorTest, Test)
   EXPECT_EQ(vector[0], 1);
   EXPECT_EQ(vector.size(), 3);
   EXPECT_EQ(vector[1], 0);
+
+  auto vector2 = vector::Vector{ 1, 2, 3 };
+  EXPECT_EQ(vector2[2], 3);
 }
