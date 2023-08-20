@@ -19,4 +19,5 @@ set(test_sources
   src/oop_test.cpp
   src/lambda_test.cpp
   src/vector_test.cpp
+  src/containers_test.cpp
 )
