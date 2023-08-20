@@ -4,16 +4,23 @@
 
 namespace vector
 {
+  template<typename T>
   class Vector
   {
+   private:
+    T* elem;
+    int sz;
+
    public:
-    explicit Vector(unsigned long size);
+    explicit Vector(int size);
 
     // initialize with a list of doubles
-    Vector(std::initializer_list<double> list);
+    Vector(std::initializer_list<T> list);
 
-    double& operator[](int idx);
-    unsigned long size();
+    Vector(const Vector& input);             // copy constructor
+    Vector& operator=(const Vector& input);  // copy assignment
+    Vector(Vector&& input);                  // move constructor
+    Vector& operator=(Vector&& input);       // move assignment
 
     ~Vector()
     {
@@ -21,8 +28,10 @@ namespace vector
       puts("destructor");
     }
 
-   private:
-    double* elem;
-    unsigned long sz;
+    T& operator[](int idx);
+    int size()
+    {
+      return sz;
+    }
   };
 }  // namespace vector

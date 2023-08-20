@@ -39,7 +39,7 @@ help:
 test: ## run tests quickly with ctest
 	rm -rf build/
 	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION) -Dmodern-cpp-knowledge_ENABLE_UNIT_TESTING=1 -DCMAKE_BUILD_TYPE="Release"
-	cmake --build build --config Release
+	cmake --build build --config Release -j`nproc`
 	cd build/ && ctest -C Release -VV
 
 coverage: ## check code coverage quickly GCC
