@@ -1,8 +1,11 @@
 #include <gtest/gtest.h>
 
 #include <algorithm>
+#include <array>
+#include <bitset>
 #include <list>
 #include <map>
+#include <utility>
 #include <vector>
 
 TEST(ContainersTest, VectorTest)
@@ -56,4 +59,41 @@ TEST(ContainersTest, UnorderedMapTest)
 
   auto res = std::find_if(m.begin(), m.end(), [](const auto& p) { return p.second == 2; });
   ASSERT_EQ(res->first, "b");
+}
+
+TEST(ContainersTest, ArrayTest)
+{
+  // An array, defined in <array>, is a fixed-size sequence of elements of a given type where the number of elements is
+  // specified at compile time. Thus, an array can be allocated with its elements on the stack, in an object, or in static
+  // storage
+  std::array<int, 3> a = { 1, 2, 3 };
+  ASSERT_EQ(a[2], 3);
+}
+
+TEST(ContainersTest, BitsetTest)
+{
+  // A fixed-size sequence of N bits
+  std::bitset<8> bs1{ "00000000" };
+  std::bitset<8> bs2{ "11111111" };
+  std::bitset<8> bs3 = bs1 | bs2;
+  unsigned long long int ullong = bs3.to_ullong();
+  ASSERT_EQ(ullong, 255);
+  auto bs3_string = bs3.to_string();
+  ASSERT_EQ(bs3_string, "11111111");
+}
+
+TEST(ContainersTest, Pair_Tuple_Test)
+{
+  // Often, we need some data that is just data; that is, a collection of values, rather than an object of a class with a
+  // well-defined semantics and an invariant for its value.
+  auto res1 = std::make_pair("1", 2);
+  auto res2 = std::make_pair("1", 2);
+  ASSERT_EQ(res1, res2);
+  auto res3 = std::make_pair("1", 3);
+  ASSERT_TRUE(res1 < res3);
+
+  auto t1 = std::make_tuple(1, 2.3, "456");
+  ASSERT_EQ(std::get<0>(t1), 1);
+  ASSERT_EQ(std::get<1>(t1), 2.3);
+  ASSERT_EQ(std::get<2>(t1), "456");
 }
