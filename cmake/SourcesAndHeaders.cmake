@@ -20,4 +20,6 @@ set(test_sources
   src/lambda_test.cpp
   src/vector_test.cpp
   src/containers_test.cpp
+  src/raii_test.cpp
+  src/concurrency_test.cpp
 )
