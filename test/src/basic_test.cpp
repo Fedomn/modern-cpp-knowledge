@@ -1,5 +1,8 @@
 #include <gtest/gtest.h>
 
+#include <thread>
+#include <type_traits>
+
 TEST(BasicTest, VarsSize)
 {
   //  A char variable is of the natural size to hold a character on a given machine (typically an 8-bit byte), and the sizes
@@ -94,6 +97,15 @@ TEST(BasicTest, BasicVars)
   myValue.myString = new char[string.length()];
   strcpy(myValue.myString, string.c_str());
   EXPECT_EQ(std::string(myValue.myString), "some string");
+}
+
+TEST(BasicTest, BasicTime)
+{
+  auto t0 = std::chrono::high_resolution_clock::now();
+  std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  auto t1 = std::chrono::high_resolution_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
+  EXPECT_GE(duration, 100);
 }
 
 TEST(BasicTest, BasicIf)
