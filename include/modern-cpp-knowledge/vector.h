@@ -43,6 +43,7 @@ namespace vector
       return *this;
     };  // copy assignment
 
+    // means reference that can be stolen from given any type
     Vector(Vector&& input) : elem(input.elem), sz(input.sz)
     {
       puts("move constructor");

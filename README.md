@@ -23,3 +23,5 @@
 
 - [Learn Modern C++](https://learnmoderncpp.com/)
 - [Learn Modern C++ in 2022](https://www.raftlabs.co/development/top-5-free-resources-to-learn-c)
+- [Chinese translation of Bjarne Stroustrup's HOPL4 paper](https://github.com/Cpp-Club/Cxx_HOPL4_zh)
+- [cpparticles](https://github.com/lkimuk/cpparticles)
