@@ -155,3 +155,23 @@ TEST(BasicTest, BasicControlFlow)
   }
   EXPECT_EQ(vec, std::vector<int>({ 2, 3, 4, 5 }));
 }
+
+// Return type is `int`.
+auto f(const int& i)
+{
+  return i;
+}
+// Return type is `const int&`.
+decltype(auto) g(const int& i)
+{
+  return i;
+}
+TEST(BasicTest, DecltypeAutoTest)
+{
+  // The decltype(auto) type-specifier also deduces a type like auto does. However, it deduces return types while keeping
+  // their references and cv-qualifiers, while auto will not.
+  int x = 123;
+  static_assert(std::is_same<const int&, decltype(f(x))>::value == 0);
+  static_assert(std::is_same<int, decltype(f(x))>::value == 1);
+  static_assert(std::is_same<const int&, decltype(g(x))>::value == 1);
+}

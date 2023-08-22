@@ -34,10 +34,12 @@ TEST(ReferenceTest, RvalueReference_And_LvalueReference)
 
 std::string reference(int& input)
 {
+  static_assert(std::is_lvalue_reference<decltype(input)>::value == 1);
   return "&";
 }
 std::string reference(int&& input)
 {
+  static_assert(std::is_rvalue_reference<decltype(input)>::value == 1);
   return "&&";
 }
 TEST(ReferenceTest, RvalueReference_Overload)
