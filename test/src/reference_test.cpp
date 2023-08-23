@@ -79,3 +79,16 @@ TEST(ReferenceTest, PerfectForwarding)
   int& y = x2;
   f(y);  // T is int&, deduces as f(int& &&) => f(int&)
 }
+
+TEST(ReferenceTest, MapMoveTest)
+{
+  std::map<std::string, std::string> map1 = { { "a", "b" } };
+  std::map<std::string, std::string> map2 = std::move(map1);
+  EXPECT_EQ(map2["a"], "b");
+  EXPECT_EQ(map1.size(), 0);
+
+  std::unordered_map<std::string, std::string> map3 = { { "a", "b" } };
+  std::unordered_map<std::string, std::string> map4 = std::move(map3);
+  EXPECT_EQ(map4["a"], "b");
+  EXPECT_EQ(map3.size(), 0);
+}
