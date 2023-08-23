@@ -175,3 +175,11 @@ TEST(BasicTest, DecltypeAutoTest)
   static_assert(std::is_same<int, decltype(f(x))>::value == 1);
   static_assert(std::is_same<const int&, decltype(g(x))>::value == 1);
 }
+
+TEST(BasicTest, CompareTest)
+{
+  unsigned int const i = 0;
+  signed int const j = -1;
+  ASSERT_TRUE(i < j);
+  ASSERT_EQ(static_cast<unsigned int>(j), 4294967295);
+}

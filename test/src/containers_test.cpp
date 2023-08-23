@@ -46,8 +46,9 @@ TEST(ContainersTest, MapTest)
   ASSERT_EQ(m.at("b"), 2);
   m["b"] = 22;
   ASSERT_EQ(m["b"], 22);
-  m.insert({ "d", 4 });
-  ASSERT_EQ(m["d"], 4);
+  const auto p = m.insert_or_assign("b", 4);
+  ASSERT_EQ(p.second, 0);
+  ASSERT_EQ(m["b"], 4);
 }
 
 TEST(ContainersTest, UnorderedMapTest)
