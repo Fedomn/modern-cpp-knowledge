@@ -8,12 +8,12 @@
 
 using namespace std;
 
-shared_mutex shared_lock;
+shared_mutex m;
 int shared_data = 0;
 
 void f(vector<double>& v, double* res)
 {
-  unique_lock<shared_mutex> l(shared_mutex);
+  unique_lock<shared_mutex> l{ m };
   shared_data += 1;
   for (auto x : v)
     *res += x;
@@ -30,7 +30,7 @@ struct F
   }
   void operator()()
   {
-    unique_lock<shared_mutex> l(shared_mutex);
+    unique_lock<shared_mutex> l(m);
     shared_data += 1;
     for (auto x : v)
       *res += x;
