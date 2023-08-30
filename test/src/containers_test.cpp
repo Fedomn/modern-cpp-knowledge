@@ -107,5 +107,5 @@ TEST(ContainersTest, Pair_Tuple_Test)
   ASSERT_EQ(std::get<0>(t1), 1);
   ASSERT_EQ(std::get<1>(t1), 2.3);
   ASSERT_EQ(std::get<2>(t1), "456");
-  //  std::cout << t1 << '\n';
+  std::cout << t1 << '\n';
 }

@@ -148,4 +148,12 @@ std::ostream& operator<<(std::ostream& os, const std::pair<T, U>& pr)
   return os;
 }
 
+template<class... Tp>
+std::ostream& operator<<(std::ostream& os, const std::tuple<Tp...>& t)
+{
+  os << "(";
+  std::apply([&os](auto&&... args) { ((os << args << ", "), ...); }, t);
+  os << ")";
+  return os;
+}
 #endif  // OUTPUT_CONTAINER_H
