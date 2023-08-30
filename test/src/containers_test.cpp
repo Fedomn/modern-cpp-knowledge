@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <modern-cpp-knowledge/output_container.h>
 
 #include <algorithm>
 #include <array>
@@ -26,6 +27,7 @@ TEST(ContainersTest, VectorTest)
   std::vector<int> v2 = {};
   std::unique_copy(v.begin(), v.end(), std::back_inserter(v2));
   ASSERT_EQ(v2, std::vector<int>({ 4, 3, 2, 1 }));
+  std::cout << v2 << '\n';
 }
 
 TEST(ContainersTest, ListTest)
@@ -36,6 +38,7 @@ TEST(ContainersTest, ListTest)
   ASSERT_EQ(l.front(), 0);
   l.erase(l.begin());
   ASSERT_EQ(l.front(), 1);
+  std::cout << l << '\n';
 }
 
 TEST(ContainersTest, MapTest)
@@ -49,6 +52,7 @@ TEST(ContainersTest, MapTest)
   const auto p = m.insert_or_assign("b", 4);
   ASSERT_EQ(p.second, 0);
   ASSERT_EQ(m["b"], 4);
+  std::cout << m << '\n';
 }
 
 TEST(ContainersTest, UnorderedMapTest)
@@ -62,6 +66,7 @@ TEST(ContainersTest, UnorderedMapTest)
 
   auto res = std::find_if(m.begin(), m.end(), [](const auto& p) { return p.second == 2; });
   ASSERT_EQ(res->first, "b");
+  std::cout << m << '\n';
 }
 
 TEST(ContainersTest, ArrayTest)
@@ -71,6 +76,7 @@ TEST(ContainersTest, ArrayTest)
   // storage
   std::array<int, 3> a = { 1, 2, 3 };
   ASSERT_EQ(a[2], 3);
+  std::cout << a << '\n';
 }
 
 TEST(ContainersTest, BitsetTest)
@@ -83,6 +89,7 @@ TEST(ContainersTest, BitsetTest)
   ASSERT_EQ(ullong, 255);
   auto bs3_string = bs3.to_string();
   ASSERT_EQ(bs3_string, "11111111");
+  std::cout << bs1 << '\n';
 }
 
 TEST(ContainersTest, Pair_Tuple_Test)
@@ -94,9 +101,11 @@ TEST(ContainersTest, Pair_Tuple_Test)
   ASSERT_EQ(res1, res2);
   auto res3 = std::make_pair("1", 3);
   ASSERT_TRUE(res1 < res3);
+  std::cout << res1 << '\n';
 
   auto t1 = std::make_tuple(1, 2.3, "456");
   ASSERT_EQ(std::get<0>(t1), 1);
   ASSERT_EQ(std::get<1>(t1), 2.3);
   ASSERT_EQ(std::get<2>(t1), "456");
+  //  std::cout << t1 << '\n';
 }
