@@ -24,4 +24,5 @@ set(test_sources
   src/raii_test.cpp
   src/concurrency_test.cpp
   src/reference_test.cpp
+  src/c_lib_test.cpp
 )
