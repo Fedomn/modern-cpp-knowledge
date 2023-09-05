@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include <unordered_map>
+
 TEST(ReferenceTest, Reference)
 {
   // As mentioned, parameters of fundamental types (such as int, double) are passed-by-value. That is, a clone copy is used

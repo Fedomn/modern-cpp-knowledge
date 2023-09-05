@@ -6,6 +6,7 @@
 #include <bitset>
 #include <list>
 #include <map>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -58,15 +59,15 @@ TEST(ContainersTest, MapTest)
 TEST(ContainersTest, UnorderedMapTest)
 {
   // The standard-library hashed containers are referred to as ‘‘unordered’’ because they don’t require an ordering function
-  std::unordered_map<std::string, int> m{ { "a", 1 }, { "b", 2 }, { "c", 3 } };
-  ASSERT_EQ(m["b"], 2);
+  std::unordered_map<std::string, int> _map{ { "a", 1 }, { "b", 2 }, { "c", 3 } };
+  ASSERT_EQ(_map["b"], 2);
 
-  ASSERT_EQ(m.find("unknown"), m.end());
-  ASSERT_EQ(m.find("b")->second, 2);
+  ASSERT_EQ(_map.find("unknown"), _map.end());
+  ASSERT_EQ(_map.find("b")->second, 2);
 
-  auto res = std::find_if(m.begin(), m.end(), [](const auto& p) { return p.second == 2; });
+  auto res = std::find_if(_map.begin(), _map.end(), [](const auto& p) { return p.second == 2; });
   ASSERT_EQ(res->first, "b");
-  std::cout << m << '\n';
+  std::cout << _map << '\n';
 }
 
 TEST(ContainersTest, ArrayTest)
