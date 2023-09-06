@@ -1,3 +1,4 @@
+// NOLINTBEGIN
 #include <gtest/gtest.h>
 
 #include <future>
@@ -86,3 +87,5 @@ TEST(ConcurrencyTest, Async_Test)
   ASSERT_EQ(res1.get(), 45);
   ASSERT_EQ(res2.get(), 46);
 }
+
+// NOLINTEND

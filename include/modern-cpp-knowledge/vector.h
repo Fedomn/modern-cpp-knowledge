@@ -9,7 +9,7 @@ namespace vector
   {
    private:
     T* elem;
-    int sz;
+    int sz{};
 
    public:
     Vector() = default;
@@ -19,10 +19,8 @@ namespace vector
     // initialize with a list of doubles
     Vector(std::initializer_list<T> list);
 
-    Vector(const Vector& input)
+    Vector(const Vector& input) : elem(new T[static_cast<unsigned long>(input.sz)]), sz(input.sz)
     {
-      elem = new T[static_cast<unsigned long>(input.sz)];
-      sz = input.sz;
       puts("copy constructor");
       for (int i = 0; i < sz; ++i)
       {
@@ -43,14 +41,15 @@ namespace vector
       return *this;
     };  // copy assignment
 
+    // noexcept: https://gieseanw.wordpress.com/2020/08/28/friendly-reminder-to-mark-your-move-constructors-noexcept/
     // means reference that can be stolen from given any type
-    Vector(Vector&& input) : elem(input.elem), sz(input.sz)
+    Vector(Vector&& input) noexcept : elem(input.elem), sz(input.sz)
     {
       puts("move constructor");
       input.elem = nullptr;
       input.sz = 0;
     };  // move constructor
-    Vector& operator=(Vector&& input)
+    Vector& operator=(Vector&& input) noexcept
     {
       puts("move assignment");
       delete[] elem;

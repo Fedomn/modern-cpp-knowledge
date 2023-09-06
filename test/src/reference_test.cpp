@@ -1,6 +1,11 @@
+// NOLINTBEGIN
 #include <gtest/gtest.h>
+#include <modern-cpp-knowledge/output_container.h>
 
+#include <iostream>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 
 TEST(ReferenceTest, Reference)
 {
@@ -93,4 +98,46 @@ TEST(ReferenceTest, MapMoveTest)
   std::unordered_map<std::string, std::string> map4 = std::move(map3);
   EXPECT_EQ(map4["a"], "b");
   EXPECT_EQ(map3.size(), 0);
+}
+
+// NOLINTEND
+
+TEST(ReferenceTest, MoveSemantics)
+{
+  std::vector<int> int_array = { 1, 2, 3, 4 };
+  // new lvalue -> stealing_ints
+  std::vector<int> stealing_ints = std::move(int_array);
+  // rvalue reference -> rvalue_stealing_ints, is a reference that refer to the data itself.
+  std::vector<int>&& rvalue_stealing_ints = std::move(stealing_ints);
+
+  // Note: stealing_ints still possible to access the data
+  EXPECT_EQ(stealing_ints[1], 2);
+  EXPECT_EQ(rvalue_stealing_ints[1], 2);
+
+  auto move_add_three_and_print = [](std::vector<int>&& vec)
+  {
+    // seize the ownership of the vec passed in.
+    std::vector<int> vec1 = std::move(vec);
+    vec1.push_back(3);
+    std::cout << vec1;
+  };
+  auto add_three_and_print = [](std::vector<int>&& vec)
+  {
+    // dose not seize the ownership of the vec, so it still be used in outside.
+    vec.push_back(3);
+    std::cout << vec;
+  };
+
+  std::vector<int> int_array2 = { 1, 2, 3, 4 };
+  // pass rvalue reference into funciton, however rvalue is moved into new rvalue.
+  // so, the real data no longer belongs to int_arrays.
+  move_add_three_and_print(std::move(int_array2));
+  // It would result in SegFault
+  // EXPECT_EQ(int_array2[1], 2);
+
+  std::vector<int> int_array3 = { 1, 2, 3, 4 };
+  // pass rvalue reference into funciton, and function only treats the parameter as a reference.
+  add_three_and_print(std::move(int_array3));
+  // lvalue still owns the real data
+  EXPECT_EQ(int_array3[1], 2);
 }
