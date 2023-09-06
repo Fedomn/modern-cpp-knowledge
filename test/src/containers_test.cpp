@@ -10,17 +10,17 @@
 #include <utility>
 #include <vector>
 
-TEST(ContainersTest, VectorTest)
+TEST(ContainersTest, VectorTest)  // NOLINT
 {
   // A vector is a sequence of elements of a given type. The elements are stored contiguously in memory.
   std::vector<int> v{ 1, 2, 3 };
   ASSERT_EQ(v.at(2), 3);
-  ASSERT_THROW(v.at(3), std::out_of_range);
+  ASSERT_THROW(v.at(3), std::out_of_range);  // NOLINT
 
   v.push_back(4);
   ASSERT_EQ(v[3], 4);
 
-  std::sort(v.begin(), v.end(), std::greater<int>());
+  std::sort(v.begin(), v.end(), std::greater<>());
   ASSERT_EQ(v, std::vector<int>({ 4, 3, 2, 1 }));
 
   // back_inserter, unique_copy(移除相邻重复元素)
@@ -29,9 +29,21 @@ TEST(ContainersTest, VectorTest)
   std::unique_copy(v.begin(), v.end(), std::back_inserter(v2));
   ASSERT_EQ(v2, std::vector<int>({ 4, 3, 2, 1 }));
   std::cout << v2 << '\n';
+
+  // https://yasenh.github.io/post/cpp-diary-1-emplace_back/
+  // push_back: Adds a new element at the end of the container, after its current last element. The content of val is copied
+  // (or moved) to the new element.
+  // 1. A constructor will be called to create a temporary object.
+  // 2. A copy of the temporary object will be constructed in the memory for the container. Note that the move constructor
+  // will be called if exist because the temporary object is an rvalue, otherwise the copy constructor should be called.
+  // 3. The destructor will be called to destroy the temporary object after copy.
+  //
+  // emplace_back: Inserts a new element at the end of the container, right after its current last element. This new element
+  // is constructed in place using args as the arguments for its constructor.
+  // the emplacement function avoids constructing and destructing temporary objects.
 }
 
-TEST(ContainersTest, ListTest)
+TEST(ContainersTest, ListTest)  // NOLINT
 {
   // list : doubly-linked list
   std::list<int> l{ 1, 2, 3 };
@@ -42,13 +54,13 @@ TEST(ContainersTest, ListTest)
   std::cout << l << '\n';
 }
 
-TEST(ContainersTest, MapTest)
+TEST(ContainersTest, MapTest)  // NOLINT
 {
   // The standard library offers a search tree (a redblack tree) called map
   // In other contexts, a map is known as an associative array or a dictionary. It is implemented as a balanced binary tree.
   std::map<std::string, int> m{ { "a", 1 }, { "b", 2 }, { "c", 3 } };
   ASSERT_EQ(m.at("b"), 2);
-  m["b"] = 22;
+  m["b"] = 22;  // NOLINT
   ASSERT_EQ(m["b"], 22);
   const auto p = m.insert_or_assign("b", 4);
   ASSERT_EQ(p.second, 0);
@@ -56,7 +68,7 @@ TEST(ContainersTest, MapTest)
   std::cout << m << '\n';
 }
 
-TEST(ContainersTest, UnorderedMapTest)
+TEST(ContainersTest, UnorderedMapTest)  // NOLINT
 {
   // The standard-library hashed containers are referred to as ‘‘unordered’’ because they don’t require an ordering function
   std::unordered_map<std::string, int> _map{ { "a", 1 }, { "b", 2 }, { "c", 3 } };
@@ -70,7 +82,7 @@ TEST(ContainersTest, UnorderedMapTest)
   std::cout << _map << '\n';
 }
 
-TEST(ContainersTest, ArrayTest)
+TEST(ContainersTest, ArrayTest)  // NOLINT
 {
   // An array, defined in <array>, is a fixed-size sequence of elements of a given type where the number of elements is
   // specified at compile time. Thus, an array can be allocated with its elements on the stack, in an object, or in static
@@ -80,12 +92,12 @@ TEST(ContainersTest, ArrayTest)
   std::cout << a << '\n';
 }
 
-TEST(ContainersTest, BitsetTest)
+TEST(ContainersTest, BitsetTest)  // NOLINT
 {
   // A fixed-size sequence of N bits
-  std::bitset<8> bs1{ "00000000" };
-  std::bitset<8> bs2{ "11111111" };
-  std::bitset<8> bs3 = bs1 | bs2;
+  std::bitset<8> bs1{ "00000000" };  // NOLINT
+  std::bitset<8> bs2{ "11111111" };  // NOLINT
+  std::bitset<8> bs3 = bs1 | bs2;    // NOLINT
   unsigned long long int ullong = bs3.to_ullong();
   ASSERT_EQ(ullong, 255);
   auto bs3_string = bs3.to_string();
@@ -93,7 +105,7 @@ TEST(ContainersTest, BitsetTest)
   std::cout << bs1 << '\n';
 }
 
-TEST(ContainersTest, Pair_Tuple_Test)
+TEST(ContainersTest, Pair_Tuple_Test)  // NOLINT
 {
   // Often, we need some data that is just data; that is, a collection of values, rather than an object of a class with a
   // well-defined semantics and an invariant for its value.
@@ -104,7 +116,7 @@ TEST(ContainersTest, Pair_Tuple_Test)
   ASSERT_TRUE(res1 < res3);
   std::cout << res1 << '\n';
 
-  auto t1 = std::make_tuple(1, 2.3, "456");
+  auto t1 = std::make_tuple(1, 2.3, "456");  // NOLINT
   ASSERT_EQ(std::get<0>(t1), 1);
   ASSERT_EQ(std::get<1>(t1), 2.3);
   ASSERT_EQ(std::get<2>(t1), "456");
