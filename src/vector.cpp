@@ -1,13 +1,16 @@
 #include "modern-cpp-knowledge/vector.h"
 
 #include <algorithm>
+#include <cstring>
 
 namespace vector
 {
   template<typename T>
-  Vector<T>::Vector(int size) : elem{ new T[static_cast<unsigned long>(size)] },
+  Vector<T>::Vector(int size) : elem{ new T[static_cast<unsigned long>(size)]{} },
                                 sz{ size }
   {
+    // non c++11 use std::memset
+    // std::memset(elem, 0, static_cast<unsigned long>(size) * sizeof(T));
   }
 
   template<typename T>

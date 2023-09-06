@@ -4,7 +4,7 @@
 
 using namespace vector;
 
-TEST(VectorTest, Test)
+TEST(VectorTest, Test)  // NOLINT
 {
   auto vector = Vector<int>(3);
   vector[0] = 1;
@@ -13,7 +13,7 @@ TEST(VectorTest, Test)
   EXPECT_EQ(vector[1], 0);
 
   auto vector2 = Vector<double>{ 1, 2, 3 };
-  vector2[2] = 4.1;
+  vector2[2] = 4.1;  // NOLINT
   EXPECT_EQ(vector2[2], 4.1);
   EXPECT_EQ(vector2.size(), 3);
 
