@@ -1,4 +1,5 @@
 init:
+	gh repo clone cmu-db/15445-bootcamp resources/15445-bootcamp
 	gh repo clone AnthonyCalandra/modern-cpp-features resources/modern-cpp-featureses
 	gh repo clone changkun/modern-cpp-tutorial resources/modern-cpp-tutorial
 	gh repo clone wuye9036/CppTemplateTutorial resources/CppTemplateTutorial
