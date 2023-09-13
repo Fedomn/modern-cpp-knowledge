@@ -1,0 +1,6 @@
+lex.yy.c
+wc/wc
+token/token
+*.tab.c
+*.tab.h
+calculator/calculator
