@@ -7,6 +7,7 @@
 - [中文的C++ Template的教学指南](https://github.com/wuye9036/CppTemplateTutorial)
 - [Modern CMake for C++](https://github.com/PacktPublishing/Modern-CMake-for-Cpp)
 - [CMake核心用法](https://mp.weixin.qq.com/s/uR78kMs6z38FzHRCIjgHeA)
+- [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines)
 
 
 ### examples
