@@ -7,6 +7,7 @@ init:
 	gh repo clone filipdutescu/modern-cpp-template resources/modern-cpp-template
 	gh repo clone PacktPublishing/Modern-CMake-for-Cpp resources/Modern-CMake-for-Cpp
 	gh repo clone adah1972/geek_time_cpp resources/geek_time_cpp
+	gh repo clone sftrabbit/CppPatterns-Patterns resources/CppPatterns-Patterns
 
 deps:
 	git clone https://github.com/google/googletest.git --branch release-1.11.0 deps/googletest
