@@ -1,11 +1,18 @@
-Checks: '*,-fuchsia-*,-google-*,-zircon-*,-abseil-*,-modernize-use-trailing-return-type,-llvm-*,-llvmlibc-*'
+Checks: '
+cppcoreguidelines-*,
+performance-*,
+modernize-*,
+google-*,
+misc-*
+cert-*,
+readability-*,
+clang-analyzer-*,
+-cppcoreguidelines-avoid-magic-numbers,
+-readability-magic-numbers,
+-readability-identifier-length,
+'
+
 CheckOptions:
-  - key:        readability-magic-numbers.IgnoredIntegerValues
-    value:      "1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;32;127;128;240;255"
-  - key:             readability-identifier-length.MinimumParameterNameLength
-    value:           1
-  - key:             readability-identifier-length.MinimumVariableNameLength
-    value:           1
   - key: readability-function-cognitive-complexity.Threshold
     value: 50      
 WarningsAsErrors: '*'

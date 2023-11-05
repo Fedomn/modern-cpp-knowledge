@@ -3,7 +3,7 @@
 //[capture list] (parameter list) mutable(optional) exception attribute -> return type {
 //  // function body
 //}
-TEST(LambdaTest, LambdaValueCapture)
+TEST(LambdaTest, LambdaValueCapture)  // NOLINT
 {
   int value = 1;
   auto copy_value = [value] { return value; };
@@ -11,7 +11,7 @@ TEST(LambdaTest, LambdaValueCapture)
   EXPECT_EQ(copy_value(), 1);
 }
 
-TEST(LambdaTest, LambdaReferenceCapture)
+TEST(LambdaTest, LambdaReferenceCapture)  // NOLINT
 {
   int value = 1;
   auto copy_value = [&value] { return value; };
@@ -19,14 +19,14 @@ TEST(LambdaTest, LambdaReferenceCapture)
   EXPECT_EQ(copy_value(), 100);
 }
 
-TEST(LambdaTest, LambdaMoveCapture)
+TEST(LambdaTest, LambdaMoveCapture)  // NOLINT
 {
   auto important = std::make_unique<int>(1);
   auto add = [v1 = 1, v2 = std::move(important)](int x, int y) -> int { return x + y + v1 + (*v2); };
   EXPECT_EQ(add(3, 4), 9);
 }
 
-TEST(LambdaTest, LambdaGeneric)
+TEST(LambdaTest, LambdaGeneric)  // NOLINT
 {
   auto generic = [](auto x, auto y) { return x + y; };
   EXPECT_EQ(generic(1, 2), 3);
@@ -34,15 +34,15 @@ TEST(LambdaTest, LambdaGeneric)
   EXPECT_EQ(generic(std::string("1"), std::string("2")), "12");
 }
 
-TEST(LambdaTest, LambdaStdFunction)
+TEST(LambdaTest, LambdaStdFunction)  // NOLINT
 {
-  std::function<int(int, int)> add = [](int x, int y) { return x + y; };
+  std::function<int(int, int)> const add = [](int x, int y) { return x + y; };
   EXPECT_EQ(add(1, 2), 3);
 }
 
-TEST(LambdaTest, LambdaStdBind)
+TEST(LambdaTest, LambdaStdBind)  // NOLINT
 {
   auto add = [](int x, int y) { return x + y; };
-  auto add_1 = std::bind(add, std::placeholders::_1, 1);
+  auto add_1 = std::bind(add, std::placeholders::_1, 1);  // NOLINT
   EXPECT_EQ(add_1(2), 3);
 }

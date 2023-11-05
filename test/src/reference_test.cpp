@@ -1,4 +1,3 @@
-// NOLINTBEGIN
 #include <gtest/gtest.h>
 #include <modern-cpp-knowledge/output_container.h>
 
@@ -7,7 +6,7 @@
 #include <utility>
 #include <vector>
 
-TEST(ReferenceTest, Reference)
+TEST(ReferenceTest, Reference)  // NOLINT
 {
   // As mentioned, parameters of fundamental types (such as int, double) are passed-by-value. That is, a clone copy is used
   // inside the function. Change to the cloned copy inside the function has no side-effect to the caller's copy.
@@ -25,7 +24,7 @@ TEST(ReferenceTest, Reference)
 // rvalue: the value on the right refers to the temporary object that no longer exists after the expression ends.
 //
 // Rvalue reference to T, is created with the syntax T&&
-TEST(ReferenceTest, RvalueReference_And_LvalueReference)
+TEST(ReferenceTest, RvalueReference_And_LvalueReference)  // NOLINT
 {
   std::string lv1 = "string, ";  // lv1 is a lvalue
   // std::string&& r1 = lv1;     // illegal, rvalue can't ref to lvalue
@@ -39,14 +38,15 @@ TEST(ReferenceTest, RvalueReference_And_LvalueReference)
   EXPECT_EQ(rv2, "string, string, string, string");
 }
 
+// NOLINTBEGIN
 std::string reference(int& input)
 {
-  static_assert(std::is_lvalue_reference<decltype(input)>::value == 1);
+  static_assert(std::is_lvalue_reference<decltype(input)>::value);
   return "&";
 }
 std::string reference(int&& input)
 {
-  static_assert(std::is_rvalue_reference<decltype(input)>::value == 1);
+  static_assert(std::is_rvalue_reference<decltype(input)>::value);
   return "&&";
 }
 TEST(ReferenceTest, RvalueReference_Overload)
@@ -64,15 +64,16 @@ TEST(ReferenceTest, RvalueReference_Overload)
   EXPECT_EQ(reference(xr), "&");
   EXPECT_EQ(reference(std::move(xr)), "&&");
 }
+// NOLINTEND
 
-TEST(ReferenceTest, PerfectForwarding)
+TEST(ReferenceTest, PerfectForwarding)  // NOLINT
 {
   // 也被称为 universal references
   // A forwarding reference is created with the syntax T&& where T is a template type parameter, or using auto&&.
   // This enables perfect forwarding: the ability to pass arguments while maintaining their value category
   // see more in CPP11.md
 
-  int x = 0;      // `x` is a lvalue of type `int`
+  int const x = 0;  // `x` is a lvalue of type `int`
   auto&& al = x;  // `al` is a lvalue of type `int&` -- binds to the lvalue, `x`
   auto&& ar = 0;  // `ar` is a lvalue of type `int&&` -- binds to the rvalue temporary, `0`
   EXPECT_EQ(al, 0);
@@ -87,7 +88,7 @@ TEST(ReferenceTest, PerfectForwarding)
   f(y);  // T is int&, deduces as f(int& &&) => f(int&)
 }
 
-TEST(ReferenceTest, MapMoveTest)
+TEST(ReferenceTest, MapMoveTest)  // NOLINT
 {
   std::map<std::string, std::string> map1 = { { "a", "b" } };
   std::map<std::string, std::string> map2 = std::move(map1);
@@ -100,9 +101,7 @@ TEST(ReferenceTest, MapMoveTest)
   EXPECT_EQ(map3.size(), 0);
 }
 
-// NOLINTEND
-
-TEST(ReferenceTest, MoveSemantics)
+TEST(ReferenceTest, MoveSemantics)  // NOLINT
 {
   std::vector<int> int_array = { 1, 2, 3, 4 };
   // new lvalue -> stealing_ints

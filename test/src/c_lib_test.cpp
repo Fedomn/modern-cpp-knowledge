@@ -2,6 +2,7 @@
 
 #include <cstdio>
 
+// NOLINTBEGIN
 TEST(CLibTest, WriteToSizedBuffer)
 {
   // https://cplusplus.com/reference/cstdio/snprintf/
@@ -10,3 +11,4 @@ TEST(CLibTest, WriteToSizedBuffer)
   snprintf(buffer, 100, "Hello World: %s !", "C");
   puts(buffer);
 }
+// NOLINTEND

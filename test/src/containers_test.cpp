@@ -1,3 +1,4 @@
+#include <_types/_uint64_t.h>
 #include <gtest/gtest.h>
 #include <modern-cpp-knowledge/output_container.h>
 
@@ -98,7 +99,7 @@ TEST(ContainersTest, BitsetTest)  // NOLINT
   std::bitset<8> bs1{ "00000000" };  // NOLINT
   std::bitset<8> bs2{ "11111111" };  // NOLINT
   std::bitset<8> bs3 = bs1 | bs2;    // NOLINT
-  unsigned long long int ullong = bs3.to_ullong();
+  uint64_t const ullong = bs3.to_ullong();
   ASSERT_EQ(ullong, 255);
   auto bs3_string = bs3.to_string();
   ASSERT_EQ(bs3_string, "11111111");

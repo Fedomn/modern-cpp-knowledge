@@ -10,7 +10,7 @@
 ///
 /// - A shared polymorphic object typically requires shared_ptrs.
 
-TEST(RAIITest, PtrTest)
+TEST(RAIITest, PtrTest)  // NOLINT
 {
   // unique_ptr ensures that its object is properly destroyed whichever way we exit f() (by throwing an exception, by
   // executing return, or by ‘‘falling off the end’’.

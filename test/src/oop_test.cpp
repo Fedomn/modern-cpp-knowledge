@@ -1,3 +1,4 @@
+// NOLINTBEGIN
 #include <gtest/gtest.h>
 
 TEST(OOPTest, OOPConstructor)
@@ -49,3 +50,4 @@ TEST(OOPTest, OOPVirtualFunctionOverride)
     // virtual void foo(double) override;  // compile error
   };
 }
+// NOLINTEND

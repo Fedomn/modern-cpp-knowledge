@@ -77,7 +77,7 @@ int add3(int a)
   return a;
 }
 
-TEST(TemplatedTest, ClassTest)
+TEST(TemplatedTest, ClassTest)  // NOLINT
 {
   auto f1 = Foo<int>(1);
   ASSERT_EQ(f1.print(), "1");
