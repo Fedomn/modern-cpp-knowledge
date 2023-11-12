@@ -1,6 +1,8 @@
 // NOLINTBEGIN
 #include <gtest/gtest.h>
 
+#include <iostream>
+
 TEST(OOPTest, OOPConstructor)
 {
   class Base
@@ -50,4 +52,46 @@ TEST(OOPTest, OOPVirtualFunctionOverride)
     // virtual void foo(double) override;  // compile error
   };
 }
+
+TEST(OOPTest, Deconstructor)
+{
+  class A
+  {
+   public:
+    A()
+    {
+      std::cout << "A constructor" << std::endl;
+    };
+    ~A()
+    {
+      std::cout << "A deconstructor" << std::endl;
+    };
+  };
+
+  {
+    A a;
+    std::cout << "scope ending, stack a should be deconstructed\n";
+  }
+
+  auto a = new A();
+  std::cout << "manually delete heap a\n";
+  delete a;
+
+  std::cout << "\n";
+
+  class B : A
+  {
+   public:
+    B() = default;
+    ~B() = default;
+  };
+
+  {
+    std::cout << "inheritance default deconstructor begin\n";
+    B b;
+  }
+
+  std::cout << "ending\n";
+}
+
 // NOLINTEND
