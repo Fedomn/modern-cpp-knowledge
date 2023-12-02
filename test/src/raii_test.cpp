@@ -1,5 +1,8 @@
 #include <gtest/gtest.h>
 
+#include <cstddef>
+#include <memory>
+
 /// Resource Acquisition Is Initialization (RAII)
 /// When we need pointer semantics:
 /// - When we share an object, we need pointers (or references) to refer to the shared object, so a shared_ptr becomes the
@@ -31,6 +34,11 @@ TEST(RAIITest, PtrTest)  // NOLINT
   // The shared_ptrs for an object share ownership of an object and that object is destroyed when the last of its shared_ptrs
   // is destroyed.
   auto ptr1 = std::make_shared<int>(1);
+  std::shared_ptr<int> const a = std::make_shared<int>();
+  if (a == nullptr)
+  {
+    std::cout << "a is nullptr" << std::endl;
+  }
   auto ptr2 = ptr1;
   EXPECT_EQ(ptr1, ptr2);
   EXPECT_EQ(ptr1.use_count(), 2);
