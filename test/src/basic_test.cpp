@@ -172,6 +172,18 @@ TEST(BasicTest, DecltypeAutoTest)  // NOLINT
   static_assert(std::is_same<const int&, decltype(g(x))>::value);
 }
 
+void testBoolRef(bool& a)
+{
+  a = true;
+}
+
+TEST(BasicTest, BoolRefTest)  // NOLINT
+{
+  auto a = false;
+  testBoolRef(a);
+  EXPECT_TRUE(a);
+}
+
 TEST(BasicTest, CompareTest)  // NOLINT
 {
   // unsigned int const i = 0;
