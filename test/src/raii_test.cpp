@@ -1,7 +1,10 @@
 #include <gtest/gtest.h>
 
+#include <algorithm>
 #include <cstddef>
+#include <iostream>
 #include <memory>
+#include <optional>
 
 /// Resource Acquisition Is Initialization (RAII)
 /// When we need pointer semantics:
@@ -48,4 +51,62 @@ TEST(RAIITest, PtrTest)  // NOLINT
   EXPECT_EQ(ptr2.use_count(), 1);
   ptr2.reset();
   EXPECT_EQ(ptr2, nullptr);
+}
+
+class T
+{
+ public:
+  T()
+  {
+    std::cout << "T()" << std::endl;
+  };
+  T(const T &) = delete;
+  auto operator=(const T &) -> T & = delete;
+  auto operator=(T &&) -> T & = delete;
+  T(T &&) = delete;
+  ~T()
+  {
+    std::cout << "~T()" << std::endl;
+  };
+  static auto init1() -> std::shared_ptr<T>
+  {
+    return std::make_shared<T>();
+  }
+  static auto init2() -> std::optional<std::unique_ptr<T>>
+  {
+    return std::make_optional(std::make_unique<T>());
+  }
+};
+
+TEST(RAIITest, SharedPtrTest)  // NOLINT
+{
+  {
+    std::cout << "start1" << std::endl;
+    std::optional<std::shared_ptr<T>> t1 = T::init1();
+    if (t1.has_value())
+    {
+      auto a = t1.value();
+    }
+    std::cout << "use_count: " << t1->use_count() << std::endl;
+    std::cout << "end1" << std::endl;
+  }
+  {
+    std::cout << "start2" << std::endl;
+    std::optional<std::shared_ptr<T>> t2 = T::init2();
+    if (t2.has_value())
+    {
+      auto a = t2.value();
+    }
+    std::cout << "use_count: " << t2->use_count() << std::endl;
+    std::cout << "end2" << std::endl;
+  }
+
+  struct C
+  {
+    int x;
+    int y;
+  };
+  auto *c = new C{ 1, 2 };
+  std::cout << c->x << std::endl;
+  std::cout << c->y << std::endl;
 }
