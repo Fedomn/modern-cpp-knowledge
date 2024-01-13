@@ -2,9 +2,39 @@
 #include <modern-cpp-knowledge/output_container.h>
 
 #include <iostream>
+#include <string>
 #include <unordered_map>
 #include <utility>
 #include <vector>
+
+TEST(ReferenceTest, ReferencePassInParam)  // NOLINT
+{
+  // pointer param is value copy
+  auto pointerValCopy = [](void* x)
+  {
+    auto* para = static_cast<std::string*>(x);
+    std::cout << "reference: " << *para << std::endl;
+    auto a = std::string("1234");
+    para = &a;
+    std::cout << "reference: " << *para << std::endl;
+  };
+  std::string str1 = "1";
+  pointerValCopy(&str1);
+  EXPECT_EQ(str1, "1");
+  std::cout << "str1: " << str1 << std::endl;
+
+  auto referenceValCopy = [](std::string& para)
+  {
+    std::cout << "reference: " << para << std::endl;
+    auto a = std::string("1234");
+    para = a;
+    std::cout << "reference: " << para << std::endl;
+  };
+  std::string str2 = "2";
+  referenceValCopy(str2);
+  EXPECT_EQ(str2, "1234");
+  std::cout << "str: " << str2 << std::endl;
+}
 
 TEST(ReferenceTest, Reference)  // NOLINT
 {
