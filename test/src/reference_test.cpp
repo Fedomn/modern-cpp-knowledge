@@ -170,3 +170,19 @@ TEST(ReferenceTest, MoveSemantics)  // NOLINT
   // lvalue still owns the real data
   EXPECT_EQ(int_array3[1], 2);
 }
+
+TEST(ReferenceTest, PointerReference)  // NOLINT
+{
+  int x = 10;
+  int* ptr = &x;    // 指向 x 的指针
+  int*& ref = ptr;  // 指向指针的引用
+
+  *ptr = 20;
+  // std::cout << *ptr << std::endl;  // 输出 20
+  EXPECT_EQ(*ptr, 20);
+
+  int y = 30;
+  ref = &y;  // 通过引用修改指针所指向的值
+  // std::cout << *ptr << std::endl;  // 输出 20
+  EXPECT_EQ(*ptr, 30);
+}
