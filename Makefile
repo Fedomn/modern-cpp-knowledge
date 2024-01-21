@@ -8,6 +8,7 @@ init:
 	gh repo clone PacktPublishing/Modern-CMake-for-Cpp resources/Modern-CMake-for-Cpp
 	gh repo clone adah1972/geek_time_cpp resources/geek_time_cpp
 	gh repo clone sftrabbit/CppPatterns-Patterns resources/CppPatterns-Patterns
+	gh repo clone downdemo/Cpp-Concurrency-in-Action-2ed resources/Cpp-Concurrency-in-Action-2ed
 
 deps:
 	git clone https://github.com/google/googletest.git --branch release-1.11.0 deps/googletest

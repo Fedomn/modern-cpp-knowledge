@@ -8,6 +8,7 @@
 - [Modern CMake for C++](https://github.com/PacktPublishing/Modern-CMake-for-Cpp)
 - [CMake核心用法](https://mp.weixin.qq.com/s/uR78kMs6z38FzHRCIjgHeA)
 - [C++ Core Guidelines](https://github.com/isocpp/CppCoreGuidelines)
+- [Cpp-Concurrency-in-Action-2ed](https://github.com/downdemo/Cpp-Concurrency-in-Action-2ed)
 
 
 ### examples
