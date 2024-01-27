@@ -60,14 +60,17 @@ class T
   {
     std::cout << "T()" << std::endl;
   };
+  // copy constructor, see vector_test.cpp
   T(const T &) = delete;
   auto operator=(const T &) -> T & = delete;
+  // move constructor, see vector_test.cpp
   auto operator=(T &&) -> T & = delete;
   T(T &&) = delete;
   ~T()
   {
     std::cout << "~T()" << std::endl;
   };
+  // 分配在堆上(make_shared自动new)，智能指针自动释放(自动调用delete)
   static auto init1() -> std::shared_ptr<T>
   {
     return std::make_shared<T>();
@@ -75,6 +78,17 @@ class T
   static auto init2() -> std::optional<std::unique_ptr<T>>
   {
     return std::make_optional(std::make_unique<T>());
+  }
+  // 使用copy constructor，分配在栈上
+  static auto init3() -> T
+  {
+    // compile error: 'T' has been explicitly marked deleted here
+    // T t = T();
+    // return t;
+
+    // 编译器执行返回值优化，不会调用copy constructor
+    // 返回值优化是一种编译器优化技术，它通过将函数的返回值直接构造在调用者分配的内存空间中，从而避免了额外的拷贝操作。
+    return T();
   }
 };
 
@@ -99,6 +113,11 @@ TEST(RAIITest, SharedPtrTest)  // NOLINT
     }
     std::cout << "use_count: " << t2->use_count() << std::endl;
     std::cout << "end2" << std::endl;
+  }
+  {
+    std::cout << "start3" << std::endl;
+    auto t3 = T::init3();
+    std::cout << "end3" << std::endl;
   }
 
   struct C

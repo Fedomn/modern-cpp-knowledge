@@ -5,8 +5,10 @@
 #include <algorithm>
 #include <array>
 #include <bitset>
+#include <iostream>
 #include <list>
 #include <map>
+#include <string>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -104,6 +106,62 @@ TEST(ContainersTest, BitsetTest)  // NOLINT
   auto bs3_string = bs3.to_string();
   ASSERT_EQ(bs3_string, "11111111");
   std::cout << bs1 << '\n';
+}
+
+class A
+{
+ public:
+  explicit A(int i) : _i(i)
+  {
+  }
+  ~A() = default;
+  // copy constructor
+  A(const A& a) : _i(a._i)
+  {
+    std::cout << "copy constructor" << std::endl;
+  }
+  // copy assignment
+  auto operator=(const A& a) -> A&
+  {
+    std::cout << "copy assignment" << std::endl;
+    _i = a._i;
+    return *this;
+  }
+  // move constructor
+  A(A&& a) noexcept : _i(a._i)
+  {
+    std::cout << "move constructor" << std::endl;
+    a._i = 0;
+  }
+  // move assignment
+  auto operator=(A&& a) noexcept -> A&
+  {
+    std::cout << "move assignment" << std::endl;
+    _i = a._i;
+    a._i = 0;
+    return *this;
+  }
+
+ private:
+  int _i;
+};
+void test_pair(std::vector<std::pair<A, A>>& res)
+{
+  std::cout << "start" << std::endl;
+
+  auto p = std::make_pair(A(1), A(2));
+  std::cout << "emplace_back" << std::endl;
+  res.emplace_back(p);
+  std::cout << "push_back" << std::endl;
+  res.push_back(p);
+
+  std::cout << "end" << std::endl;
+}
+
+TEST(ContainersTest, Pair_Copy_Constructor_Test)  // NOLINT
+{
+  std::vector<std::pair<A, A>> res;
+  test_pair(res);
 }
 
 TEST(ContainersTest, Pair_Tuple_Test)  // NOLINT
