@@ -5,9 +5,11 @@
 #include <algorithm>
 #include <array>
 #include <bitset>
+#include <cstdio>
 #include <iostream>
 #include <list>
 #include <map>
+#include <set>
 #include <string>
 #include <unordered_map>
 #include <utility>
@@ -69,6 +71,35 @@ TEST(ContainersTest, MapTest)  // NOLINT
   ASSERT_EQ(p.second, 0);
   ASSERT_EQ(m["b"], 4);
   std::cout << m << '\n';
+}
+
+TEST(ContainersTest, MapKeyTest)  // NOLINT
+{
+  // 通过 std::pair 里实现的 operator== 方法来实现
+  // 参见：https://en.cppreference.com/w/cpp/utility/pair/operator_cmp
+  std::pair<std::string, std::string> a = { "a", "b" };
+  std::map<std::pair<std::string, std::string>, int> m;
+  m.insert({ a, 1 });
+  std::pair<std::string, std::string> b = { "a", "b" };
+  if (m.find(b) != m.end())
+  {
+    std::cout << "found" << std::endl;
+  }
+  else
+  {
+    std::cout << "not found" << std::endl;
+  }
+}
+
+TEST(ContainersTest, SetKeyTest)  // NOLINT
+{
+  std::set<std::pair<std::string, std::string>> a;
+  a.insert({ "a", "b" });
+  a.insert({ "a", "b" });
+  for (const auto& p : a)
+  {
+    std::cout << p.first << " " << p.second << std::endl;
+  }
 }
 
 TEST(ContainersTest, UnorderedMapTest)  // NOLINT
@@ -158,10 +189,30 @@ void test_pair(std::vector<std::pair<A, A>>& res)
   std::cout << "end" << std::endl;
 }
 
+class B
+{
+ public:
+  B(std::vector<A>& list) : list_(list)
+  {
+  }
+  ~B() = default;
+
+ private:
+  std::vector<A> list_;
+};
+
 TEST(ContainersTest, Pair_Copy_Constructor_Test)  // NOLINT
 {
+  // pair will also deep copy the elements
   std::vector<std::pair<A, A>> res;
   test_pair(res);
+
+  puts("---------------");
+
+  // vector will deep copy the elements
+  std::vector<A> list = { A(1) };  // copy constructor
+  puts("start vector test");
+  auto list2 = B(list);  // copy constructor
 }
 
 TEST(ContainersTest, Pair_Tuple_Test)  // NOLINT
