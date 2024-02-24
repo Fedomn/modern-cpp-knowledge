@@ -1,10 +1,12 @@
 #include <_types/_uint64_t.h>
+#include <gtest/gtest-death-test.h>
 #include <gtest/gtest.h>
 #include <modern-cpp-knowledge/output_container.h>
 
 #include <algorithm>
 #include <array>
 #include <bitset>
+#include <cassert>
 #include <cstdio>
 #include <iostream>
 #include <list>
@@ -144,8 +146,12 @@ class A
  public:
   explicit A(int i) : _i(i)
   {
+    std::cout << "constructor" << std::endl;
   }
-  ~A() = default;
+  ~A()
+  {
+    std::cout << "destructor" << std::endl;
+  };
   // copy constructor
   A(const A& a) : _i(a._i)
   {
@@ -231,4 +237,23 @@ TEST(ContainersTest, Pair_Tuple_Test)  // NOLINT
   ASSERT_EQ(std::get<1>(t1), 2.3);
   ASSERT_EQ(std::get<2>(t1), "456");
   std::cout << t1 << '\n';
+}
+
+auto testReturnValue() -> A
+{
+  puts("in testReturnValue");
+  auto a = A{ 1 };
+  return a;
+}
+
+TEST(ContainersTest, testReturnValue)  // NOLINT
+{
+  auto b = testReturnValue();
+  puts("out");
+}
+
+TEST(ContainersTest, testReturnValue222222)  // NOLINT
+{
+  ::testing::FLAGS_gtest_death_test_style = "threadsafe";
+  EXPECT_DEATH(assert(1 == 2), ".*1 == 2.*");
 }
