@@ -46,3 +46,15 @@ TEST(LambdaTest, LambdaStdBind)  // NOLINT
   auto add_1 = std::bind(add, std::placeholders::_1, 1);  // NOLINT
   EXPECT_EQ(add_1(2), 3);
 }
+
+// use variadic template instead of va_arg arguments
+template<class... Args>
+auto sum(Args... args)
+{
+  return (args + ...);
+}
+
+TEST(LambdaTest, VaArg)  // NOLINT
+{
+  EXPECT_EQ(sum(3, 1, 2, 3), 9);
+}

@@ -39,6 +39,9 @@ TEST(OOPTest, OOPConstructor)
 
 namespace OOP
 {
+  // virtual: declares a virtual function that can be overridden in derived classes
+  // override: verifies that the function is virtual and overrides a virtual function of a base class
+  // final: verifies that the function is virtual and cannot be overridden by a member function of a derived class
   class Base
   {
    public:
@@ -53,6 +56,8 @@ namespace OOP
     {
       puts("Base::default_boo()");
     }
+
+    virtual void final_boo() = 0;
 
     virtual ~Base() = default;
   };
@@ -70,6 +75,10 @@ namespace OOP
     void boo() override;
 
     void default_boo() override;
+
+    // skip virtual function override
+    void final_boo() final override{};
+    // virtual void final_boo() final{}; // another way to skip
   };
   void SubClass::boo()
   {

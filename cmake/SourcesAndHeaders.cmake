@@ -28,4 +28,5 @@ set(test_sources
   src/templated_test.cpp
   src/mysql_test.cpp
   src/string_test.cpp
+  src/class_test.cpp
 )
