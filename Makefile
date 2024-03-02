@@ -12,6 +12,9 @@ init:
 
 deps:
 	git clone https://github.com/google/googletest.git --branch release-1.11.0 deps/googletest
+
+build-gtest:
+	git clone https://github.com/google/googletest.git --branch release-1.11.0 deps/googletest
 	cd deps/googletest && \
     cmake -Bbuild -Dgtest_disable_pthreads=1 && \
     cmake --build build --config Release && \
