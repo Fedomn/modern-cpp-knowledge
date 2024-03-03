@@ -1,8 +1,8 @@
-#include "modern-cpp-knowledge/vector.h"
+#include "mcpp/vector.h"
 
 #include <gtest/gtest.h>
 
-using namespace vector;
+using namespace vector;  // NOLINT
 
 TEST(VectorTest, Test)  // NOLINT
 {

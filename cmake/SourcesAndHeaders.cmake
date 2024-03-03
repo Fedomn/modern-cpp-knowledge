@@ -9,9 +9,9 @@ set(exe_sources
 )
 
 set(headers
-    include/modern-cpp-knowledge/tmp.hpp
-    include/modern-cpp-knowledge/vector.h
-    include/modern-cpp-knowledge/output_container.h
+    include/mcpp/tmp.hpp
+    include/mcpp/vector.h
+    include/mcpp/output_container.h
 )
 
 set(test_sources

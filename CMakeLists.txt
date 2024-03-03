@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.15)
 # Project details
 #
 
-project(modern-cpp-knowledge
+project(mcpp
   VERSION 0.1
   DESCRIPTION "Modern C++ Knowledge"
   LANGUAGES CXX

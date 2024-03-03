@@ -45,13 +45,13 @@ help:
 
 test: ## run tests quickly with ctest
 	rm -rf build/
-	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION) -Dmodern-cpp-knowledge_ENABLE_UNIT_TESTING=1 -Dmodern-cpp-knowledge_ENABLE_ASAN=$(ENABLE_ASAN) -DCMAKE_BUILD_TYPE="Debug"
+	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION) -Dmcpp_ENABLE_UNIT_TESTING=1 -Dmcpp_ENABLE_ASAN=$(ENABLE_ASAN) -DCMAKE_BUILD_TYPE="Debug"
 	cmake --build build --config Debug -j`nproc`
 	cd build/ && ctest -C Debug -VV
 
 coverage: ## check code coverage quickly GCC
 	rm -rf build/
-	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION) -Dmodern-cpp-knowledge_ENABLE_CODE_COVERAGE=1
+	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION) -Dmcpp_ENABLE_CODE_COVERAGE=1
 	cmake --build build --config Release
 	cd build/ && ctest -C Release -VV
 	cd .. && (bash -c "find . -type f -name '*.gcno' -exec gcov -pb {} +" || true)

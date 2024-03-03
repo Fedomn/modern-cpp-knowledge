@@ -1,4 +1,4 @@
-#include "modern-cpp-knowledge/tmp.hpp"
+#include "mcpp/tmp.hpp"
 
 #include <gtest/gtest.h>
 
