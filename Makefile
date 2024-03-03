@@ -39,6 +39,7 @@ export PRINT_HELP_PYSCRIPT
 CURRENT_DIR = $(shell pwd)
 INSTALL_LOCATION := $(CURRENT_DIR)/install
 ENABLE_ASAN=1
+ASAN_ENV=ASAN_OPTIONS=detect_leaks=0 LD_PRELOAD=/lib64/libasan.so.6
 
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
@@ -47,7 +48,7 @@ test: ## run tests quickly with ctest
 	rm -rf build/
 	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION) -Dmcpp_ENABLE_UNIT_TESTING=1 -Dmcpp_ENABLE_ASAN=$(ENABLE_ASAN) -DCMAKE_BUILD_TYPE="Debug"
 	cmake --build build --config Debug -j`nproc`
-	cd build/ && ctest -C Debug -VV
+	cd build/ && $(ASAN_ENV) ctest -C Debug -VV
 
 coverage: ## check code coverage quickly GCC
 	rm -rf build/

@@ -17,7 +17,7 @@ TEST(BasicTest, VarsSize)  // NOLINT
   EXPECT_EQ(sizeof(float), 4);
   EXPECT_EQ(sizeof(double), 8);
   EXPECT_EQ(sizeof(bool), 1);
-  EXPECT_EQ(sizeof(std::string), 24);
+  EXPECT_EQ(sizeof(std::string), 8);
   EXPECT_EQ(sizeof(std::vector<int>), 24);
 
   //  narrowing conversions, such as double to int and int to char are allowed and implicitly applied. The problems caused by

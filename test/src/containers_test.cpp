@@ -1,4 +1,3 @@
-#include <_types/_uint64_t.h>
 #include <gtest/gtest-death-test.h>
 #include <gtest/gtest.h>
 #include <mcpp/output_container.h>
@@ -254,6 +253,7 @@ TEST(ContainersTest, testReturnValue)  // NOLINT
 
 TEST(ContainersTest, testReturnValue222222)  // NOLINT
 {
-  ::testing::FLAGS_gtest_death_test_style = "threadsafe";
+  // Not works on centos7
+  // ::testing::FLAGS_gtest_death_test_style = "threadsafe";
   EXPECT_DEATH(assert(1 == 2), ".*1 == 2.*");
 }

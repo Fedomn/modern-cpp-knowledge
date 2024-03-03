@@ -26,7 +26,9 @@ TEST(RAIITest, PtrTest)  // NOLINT
   EXPECT_EQ(ptr.get(), ptr.operator->());
   EXPECT_EQ(ptr.get(), &*ptr);
   EXPECT_EQ(ptr.get(), &ptr.operator*());
-  EXPECT_EQ(ptr.get(), ptr.release());
+  auto l = ptr.get();
+  auto r = ptr.release();
+  EXPECT_EQ(l, r);
   EXPECT_EQ(ptr.get(), nullptr);
   ptr.reset(new int(2));
   EXPECT_EQ(*ptr, 2);
