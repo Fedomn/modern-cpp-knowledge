@@ -86,6 +86,24 @@ TEST(BasicTest, BasicVars)  // NOLINT
   EXPECT_EQ(*ptr, "Pizza");
   *ptr = "Hamburger";
   EXPECT_EQ(food, "Hamburger");
+}
+
+TEST(BasicTest, Unions)  // NOLINT
+{
+  // A union is a special class type where all members start at the same address
+  // A tagged union (aka discriminated union) is a union that keeps track of its types. std::variant is a tagged union.
+  // prefer tagged union over union
+  union Value
+  {
+    int a;
+    double b;
+  };
+  Value v = { 1 };
+  EXPECT_EQ(v.a, 1);    // NOLINT
+  v.a = 2;              // NOLINT
+  EXPECT_EQ(v.a, 2);    // NOLINT
+  v.b = 3.0;            // NOLINT
+  EXPECT_EQ(v.b, 3.0);  // NOLINT
 
   std::variant<int, std::string> myValue = { "2" };
   auto myValue1 = std::get<std::string>(myValue);
@@ -93,6 +111,15 @@ TEST(BasicTest, BasicVars)  // NOLINT
   myValue = 1;
   auto myValue2 = std::get<int>(myValue);
   EXPECT_EQ(myValue2, 1);
+  try
+  {
+    auto myValue3 = std::get<std::string>(myValue);
+    EXPECT_EQ(myValue3, "2");
+  }
+  catch (const std::bad_variant_access& e)
+  {
+    EXPECT_EQ(e.what(), std::string("std::get: wrong index for variant"));
+  }
 }
 
 TEST(BasicTest, BasicTime)  // NOLINT

@@ -1,0 +1,9 @@
+{
+    "search.exclude": {
+        "**/build": true,
+        "**/deps": true,
+    },
+    "search.useIgnoreFiles": false,
+    "cmake.configureOnOpen": false,
+    "cmake.buildBeforeRun": false,
+}
