@@ -131,3 +131,8 @@ TEST(RAIITest, SharedPtrTest)  // NOLINT
   std::cout << c->x << std::endl;
   std::cout << c->y << std::endl;
 }
+
+// function(std::shared_ptr<int>& shr>:
+// The above (& shr) suggests, that you might reseat the smart pointer in the method, but the method does not have any intent
+// to do so.
+// This magic is an overkill if you are only interested in the underlying resource of the shared pointer.
