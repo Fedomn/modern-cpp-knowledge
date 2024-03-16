@@ -44,6 +44,11 @@ ASAN_ENV=ASAN_OPTIONS=detect_leaks=0 LD_PRELOAD=/lib64/libasan.so.6
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
+bld: ## build the project
+	rm -rf build/
+	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION) -DCMAKE_BUILD_TYPE="Release" -Dmcpp_BUILD_EXECUTABLE=1
+	cmake --build build --config Release -j`nproc`
+
 test: ## run tests quickly with ctest
 	rm -rf build/
 	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION) -Dmcpp_ENABLE_UNIT_TESTING=1 -Dmcpp_ENABLE_ASAN=$(ENABLE_ASAN) -DCMAKE_BUILD_TYPE="Debug"
