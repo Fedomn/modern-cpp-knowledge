@@ -12,6 +12,7 @@ init:
 
 deps:
 	git clone https://github.com/google/googletest.git --branch release-1.11.0 deps/googletest
+	git clone --recurse-submodules https://github.com/boostorg/boost.git --branch boost-1.85.0 deps/boost
 
 build-gtest:
 	git clone https://github.com/google/googletest.git --branch release-1.11.0 deps/googletest

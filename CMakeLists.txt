@@ -357,6 +357,7 @@ message(STATUS "Finished building requirements for installing the package.\n")
 #
 
 if(${PROJECT_NAME}_ENABLE_UNIT_TESTING)
+  include(cmake/boost.cmake)
   include(cmake/googletest.cmake)
   enable_testing()
   message(STATUS "Build unit tests for the project. Tests should always be found in the test folder\n")

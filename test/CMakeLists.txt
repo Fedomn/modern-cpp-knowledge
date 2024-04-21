@@ -50,6 +50,7 @@ foreach(file ${test_sources})
       gtest_main
       gmock
       gmock_main
+      boost_lockfree
       ${${CMAKE_PROJECT_NAME}_TEST_LIB}
       )
   elseif(${CMAKE_PROJECT_NAME}_USE_CATCH2)
