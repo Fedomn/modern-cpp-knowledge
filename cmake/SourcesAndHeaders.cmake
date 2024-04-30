@@ -16,6 +16,7 @@ set(headers
 
 set(test_sources
   src/lock_free_pool.cpp
+  src/limiter.cpp
   src/tmp_test.cpp
   src/basic_test.cpp
   src/oop_test.cpp
