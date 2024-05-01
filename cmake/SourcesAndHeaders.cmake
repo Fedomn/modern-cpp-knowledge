@@ -31,4 +31,5 @@ set(test_sources
   src/mysql_test.cpp
   src/string_test.cpp
   src/class_test.cpp
+  src/lock_test.cpp
 )
