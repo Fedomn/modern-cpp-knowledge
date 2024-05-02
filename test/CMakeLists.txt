@@ -51,6 +51,8 @@ foreach(file ${test_sources})
       gmock
       gmock_main
       boost_lockfree
+      brpc-static
+      ${DYNAMIC_LIB}
       ${${CMAKE_PROJECT_NAME}_TEST_LIB}
       )
   elseif(${CMAKE_PROJECT_NAME}_USE_CATCH2)

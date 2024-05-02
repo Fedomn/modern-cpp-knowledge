@@ -1,4 +1,10 @@
+#include <bthread/condition_variable.h>
+#include <bthread/mutex.h>
 #include <gtest/gtest.h>
+
+#include <chrono>
+#include <iostream>
+#include <thread>
 
 // 虚假唤醒:
 //
@@ -35,12 +41,33 @@
 // 虚假唤醒是指当你对线程进行唤醒时，你不希望被唤醒的线程也被唤醒的现象。
 // pthread库之所以允许虚假，是为了性能上的考虑。pthread库希望应用程序某些时候在进入内核态之前就被唤醒，这样就可以避免进入内核态的开销。
 
+bthread::Mutex mutex;
+bthread::ConditionVariable condition;
+
+void Producer()
+{
+  std::unique_lock<bthread::Mutex> lock_guard(mutex);
+  condition.notify_all();
+}
+
+void Consumer()
+{
+  std::this_thread::sleep_for(std::chrono::seconds(1));
+  std::unique_lock<bthread::Mutex> lock_guard(mutex);
+  int ret = condition.wait_for(lock_guard, 1 * 1000 * 1000);
+  if (ret == ETIMEDOUT)
+  {
+    std::cout << "wait timeout \n";
+  }
+}
 
 TEST(LockTest, Const)  // NOLINT
 {
+  std::thread a(Producer);
+  std::thread b(Consumer);
+  a.join();
+  b.join();
 }
-
-
 
 // gpt:
 // 在执行系统调用时，可能会被中断，原因如下：

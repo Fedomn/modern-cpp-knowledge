@@ -3,6 +3,10 @@
         "**/build": true,
         "**/deps": true,
     },
+    "clangd.arguments": [
+		"--header-insertion=never",
+		"--limit-references=0",
+	],
     "search.useIgnoreFiles": false,
     "cmake.configureOnOpen": false,
     "cmake.buildBeforeRun": false,
