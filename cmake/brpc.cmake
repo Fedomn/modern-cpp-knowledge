@@ -1,6 +1,10 @@
 # https://github.com/apache/brpc/blob/master/docs/cn/getting_started.md
 # deps/brpc/example/grpc_c++/CMakeLists.txt
 
+# disable compile warning: 
+# add the following line after `add_libray(brpc-static)` in `deps/brpc/src/CMakeLists.txt`
+# target_compile_options(brpc-static PUBLIC "-w")
+
 add_subdirectory(${CMAKE_SOURCE_DIR}/deps/brpc)
 include_directories(${CMAKE_SOURCE_DIR}/deps/brpc/src ${CMAKE_SOURCE_DIR}/deps/brpc/output/include)
 
