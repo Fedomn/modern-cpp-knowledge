@@ -27,6 +27,7 @@ set(test_sources
   src/concurrency_test.cpp
   src/reference_test.cpp
   src/c_lib_test.cpp
+  src/c_test.cpp
   src/templated_test.cpp
   src/mysql_test.cpp
   src/string_test.cpp

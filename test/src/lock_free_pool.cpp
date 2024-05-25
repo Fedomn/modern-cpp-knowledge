@@ -70,6 +70,14 @@ class LockFreePool
   // available obj index queue used for geting a available obj in concurrent.
   boost::lockfree::queue<uint32_t, boost::lockfree::fixed_sized<true>> available_objs_queue_;
 
+  // 使用 atomic 还需要锁吗？
+  // https://cplusplus.com/reference/atomic/atomic/?kw=atomic
+  // The main characteristic of atomic objects is that access to this contained value from different threads cannot cause data races
+  // (i.e., doing that is well-defined behavior, with accesses properly sequenced).
+  // 包裹了value，从不同线程访问该数据不会引起数据竞争。
+  //
+  // Generally, for all other objects, the possibility of causing a data race for accessing the same object concurrently qualifies the operation as undefined behavior.
+  // 比如，多线程访问一个 string，可能访问到了已经释放的地址，导致core
   // the available obj count of the current pool.
   std::atomic_uint32_t available_objs_cnt_ = 0;
 

@@ -2,7 +2,10 @@
 
 #include <cstdio>
 
+// different C library implementations, such as the GNU C library (glibc), dietlibc, or musl.
+
 // NOLINTBEGIN
+
 TEST(CLibTest, WriteToSizedBuffer)
 {
   // https://cplusplus.com/reference/cstdio/snprintf/
@@ -10,5 +13,9 @@ TEST(CLibTest, WriteToSizedBuffer)
   char buffer[100];
   snprintf(buffer, 100, "Hello World: %s !", "C");
   puts(buffer);
+  islower('a');
 }
+
+
+
 // NOLINTEND
