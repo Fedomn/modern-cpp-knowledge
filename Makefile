@@ -1,14 +1,14 @@
 init:
-	gh repo clone cmu-db/15445-bootcamp resources/15445-bootcamp
-	gh repo clone AnthonyCalandra/modern-cpp-features resources/modern-cpp-featureses
-	gh repo clone changkun/modern-cpp-tutorial resources/modern-cpp-tutorial
-	gh repo clone wuye9036/CppTemplateTutorial resources/CppTemplateTutorial
-	gh repo clone abseil/abseil-cpp resources/abseil-cpp
-	gh repo clone filipdutescu/modern-cpp-template resources/modern-cpp-template
-	gh repo clone PacktPublishing/Modern-CMake-for-Cpp resources/Modern-CMake-for-Cpp
-	gh repo clone adah1972/geek_time_cpp resources/geek_time_cpp
-	gh repo clone sftrabbit/CppPatterns-Patterns resources/CppPatterns-Patterns
-	gh repo clone downdemo/Cpp-Concurrency-in-Action-2ed resources/Cpp-Concurrency-in-Action-2ed
+	git clone https://github.com/cmu-db/15445-bootcamp.git resources/15445-bootcamp
+	git clone https://github.com/AnthonyCalandra/modern-cpp-features.git resources/modern-cpp-featureses
+	git clone https://github.com/changkun/modern-cpp-tutorial.git resources/modern-cpp-tutorial
+	git clone https://github.com/wuye9036/CppTemplateTutorial.git resources/CppTemplateTutorial
+	git clone https://github.com/abseil/abseil-cpp.git resources/abseil-cpp
+	git clone https://github.com/filipdutescu/modern-cpp-template.git resources/modern-cpp-template
+	git clone https://github.com/PacktPublishing/Modern-CMake-for-Cpp.git resources/Modern-CMake-for-Cpp
+	git clone https://github.com/adah1972/geek_time_cpp.git resources/geek_time_cpp
+	git clone https://github.com/sftrabbit/CppPatterns-Patterns.git resources/CppPatterns-Patterns
+	git clone https://github.com/downdemo/Cpp-Concurrency-in-Action-2ed.git resources/Cpp-Concurrency-in-Action-2ed
 
 deps:
 	git clone https://github.com/google/googletest.git --branch release-1.11.0 deps/googletest

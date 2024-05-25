@@ -9,7 +9,7 @@
 // Array:
 // We already have seen that a valid pointer holds the address of an object of its reference type, but actually C assumes
 // more than that, A valid pointer refers to the first element of an array of the reference type.
-TEST(CLibTest, LongArrayTest)
+TEST(CTest, LongArrayTest)
 {
   const int ARRAY_SIZE = 5;
   // 分配内存空间存储 long 类型的数组, 或者像下面的 double 数组初始化分配在栈上
@@ -34,7 +34,7 @@ TEST(CLibTest, LongArrayTest)
   EXPECT_EQ(p2 - p1, 2);
 }
 
-TEST(CLibTest, StringArrayTest)
+TEST(CTest, StringArrayTest)
 {
   const int NUM_STRINGS = 3;
   const int MAX_STRING_LEN = 100;
@@ -65,7 +65,7 @@ TEST(CLibTest, StringArrayTest)
   delete[] stringArray;
 }
 
-TEST(CLibTest, StructTest) {
+TEST(CTest, StructTest) {
   // Pointers as opaque types: they do not directly contain the information that we are interested in: rather, they refer, or
   // point, to the data. C’s syntax for pointers always has the peculiar *
   struct bird
@@ -78,6 +78,28 @@ TEST(CLibTest, StructTest) {
   // struct itself.
   bird b1 = { "a", "b" };
   EXPECT_EQ(b1.a, "a");
+}
+
+// void *
+// Any object pointer converts to and from void*.
+// Think of a void* pointer that holds the address of an existing object as a pointer into a storage instance that holds the
+// object.
+TEST(CTest, VoidTest) {
+  char32_t a;
+}
+
+// dynamic allocation:
+//
+TEST(CTest, DynamicAllocationTest)
+{
+  int* intVec = (int*)malloc(sizeof(int[10]));
+  for (int i = 0; i < 10; ++i)
+  {
+    intVec[i] = i;
+  }
+  EXPECT_EQ(intVec[0], 0);
+  EXPECT_EQ(intVec[9], 9);
+  free(intVec);
 }
 
 // NOLINTEND
