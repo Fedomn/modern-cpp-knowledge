@@ -185,4 +185,26 @@ TEST(ReferenceTest, PointerReference)  // NOLINT
   ref = &y;  // 通过引用修改指针所指向的值
   // std::cout << *ptr << std::endl;  // 输出 20
   EXPECT_EQ(*ptr, 30);
+
+  // 指针标量，函数参数传递副本，可以通过双重指针，在函数内部来修改它指向的值
+  auto testPointer = [](int** x)
+  {
+    *x = new int(2);
+  };
+  int *a = nullptr;
+  testPointer(&a);
+  EXPECT_EQ(*a, 2);
+
+  auto testPointer2 = [](int* x)
+  {
+    // 直接修改指针指向的值，会导致参数修改成功
+    *x = 2;
+    EXPECT_EQ(*x, 2);
+    // 修改一个指针副本，不会对参数产生实际影响
+    x = new int(3);
+  };
+  int b = 1;
+  int *bPtr = &b;
+  testPointer2(bPtr);
+  EXPECT_EQ(*bPtr, 2);
 }
