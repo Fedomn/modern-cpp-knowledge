@@ -33,4 +33,5 @@ set(test_sources
   src/string_test.cpp
   src/class_test.cpp
   src/lock_test.cpp
+  src/atomic_test.cpp
 )
