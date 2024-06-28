@@ -63,4 +63,8 @@ TEST(AtomicTest, AtomicThreadFence)
   }
 }
 
+
+// https://downdemo.github.io/Cpp-Concurrency-in-Action-2ed/04_the_cpp_memory_model_and_operations_on_atomic_type.html
+// memory_order_seq_cst 是所有原子操作的默认选项，可以省略不写。
+
 // NOLINTEND
