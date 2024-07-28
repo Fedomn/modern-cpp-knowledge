@@ -34,4 +34,5 @@ set(test_sources
   src/class_test.cpp
   src/lock_test.cpp
   src/atomic_test.cpp
+  src/lifetime_test.cpp
 )
