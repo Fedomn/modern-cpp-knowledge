@@ -71,3 +71,32 @@ TEST(MySQLTest, Const)  // NOLINT
   EXPECT_EQ(a, 1306787887);
   EXPECT_EQ(b, 1168113696);
 }
+
+#define UINT_MAX32 0xFFFFFFFFL // NOLINT
+
+TEST(MySQLTest, BIT)  // NOLINT
+{
+  EXPECT_EQ(UINT32_MAX, 4294967295U);
+  EXPECT_EQ(UINT32_MAX, (1ULL << 32) - 1);
+  EXPECT_EQ(UINT32_MAX + 1, 0);
+
+  uint32_t max_22bit = 0x3FFFFF;
+  EXPECT_EQ(max_22bit, 4194303);
+  EXPECT_EQ(max_22bit, (1ULL << 22) - 1);
+  uint32_t val1 = max_22bit + 2;
+  EXPECT_EQ(val1 % max_22bit, 2);
+  uint32_t val2 = 212;
+  EXPECT_EQ(val2 % max_22bit, 212);
+
+  uint32_t max_12bit = 0x3FF;
+  EXPECT_EQ(max_12bit, 1024 - 1);
+  EXPECT_EQ(max_12bit, (1ULL << 10) - 1);
+
+  uint32_t new_val = (max_12bit << 22) | max_22bit;
+  EXPECT_EQ(new_val, UINT32_MAX);
+  EXPECT_EQ(new_val, (1ULL << 32) - 1);
+
+  // test
+  EXPECT_EQ(4194304, (1ULL << 22) | 0);
+  EXPECT_EQ(4294967295, (1ULL << 22) | UINT_MAX32);
+}
