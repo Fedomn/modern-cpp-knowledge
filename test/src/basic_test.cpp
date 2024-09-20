@@ -218,3 +218,54 @@ TEST(BasicTest, CompareTest)  // NOLINT
   // ASSERT_TRUE(i < j);
   // ASSERT_EQ(static_cast<unsigned int>(j), 4294967295);
 }
+
+// https://stackoverflow.com/questions/222557/what-uses-are-there-for-placement-new
+//
+// Standard C++ also supports placement new operator, which constructs an object on a pre-allocated buffer. This is useful
+// when building a memory pool, a garbage collector or simply when performance and exception safety are paramount (there's no
+// danger of allocation failure since the memory has already been allocated, and constructing an object on a pre-allocated
+// buffer takes less time):
+//
+// You may also want to be sure there can be no allocation failure at a certain part of critical code (for instance, in code
+// executed by a pacemaker). In that case you would want to allocate memory earlier, then use placement new within the
+// critical section.
+TEST(BasicTest, PlacementNew) // NOLINT
+{
+  class Element
+  {
+   public:
+    Element()
+    {
+      puts("constructor");
+    }
+    ~Element() {
+      puts("destructor");
+    }
+
+    void SetNum(int n)
+    {
+      num = n;
+    }
+
+    int GetNum()
+    {
+      return num;
+    }
+
+   private:
+    int num = 0;
+  };
+
+  char* buf = new char[sizeof(Element)];
+  Element* e = new (buf) Element();
+
+  e->SetNum(1);
+  std::cout << e->GetNum() << std::endl;
+
+  std::cout << &e << std::endl;
+  std::cout << &(*e) << std::endl;
+  std::cout << &buf << std::endl;
+
+  e->~Element();
+  delete[] buf;
+}
