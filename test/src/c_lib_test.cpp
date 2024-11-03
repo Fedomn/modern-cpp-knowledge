@@ -16,6 +16,18 @@ TEST(CLibTest, WriteToSizedBuffer)
   islower('a');
 }
 
+// %s 会输出整个字符串，直到遇到 \0。
+// %.*s 允许你指定输出的字符数，可以输出字符串的前 N 个字符。
+TEST(CLibTest, PrintString)
+{
+  const char* str = "Hello, World!";
 
+  // 使用 %s 输出整个字符串
+  printf("%s\n", str);  // 输出: Hello, World!
+
+  // 使用 %.*s 输出前 5 个字符
+  int length = 5;
+  printf("%.*s\n", length, str);  // 输出: Hello
+}
 
 // NOLINTEND
