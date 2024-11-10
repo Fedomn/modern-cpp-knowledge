@@ -14,6 +14,8 @@ deps:
 	git clone https://github.com/google/googletest.git --branch release-1.11.0 deps/googletest
 	git clone --recurse-submodules https://github.com/boostorg/boost.git --branch boost-1.85.0 deps/boost
 	git clone https://github.com/apache/brpc.git --branch release-1.9 deps/brpc
+	git clone https://github.com/google/benchmark.git --branch v1.9.0 benchmark/deps/benchmark
+	git clone https://github.com/google/googletest.git --branch release-1.11.0 benchmark/deps/benchmark/googletest
 
 build-gtest:
 	git clone https://github.com/google/googletest.git --branch release-1.11.0 deps/googletest
@@ -74,3 +76,9 @@ format: ## format the project sources
 	rm -rf build/
 	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION)
 	cmake --build build --target clang-format
+
+.PHONY: benchmark
+benchmark: ## run the benchmark
+	rm -rf ./benchmark/build && mkdir -p ./benchmark/build
+	cd ./benchmark/build && cmake ../ -DCMAKE_BUILD_TYPE=Release
+	cd ./benchmark/build && make -j`nproc`
