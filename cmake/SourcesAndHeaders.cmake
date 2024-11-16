@@ -1,5 +1,4 @@
 set(sources
-    src/tmp.cpp
     src/vector.cpp
 )
 
@@ -8,7 +7,6 @@ set(exe_sources
 )
 
 set(headers
-    include/mcpp/tmp.hpp
     include/mcpp/vector.h
     include/mcpp/output_container.h
 )
