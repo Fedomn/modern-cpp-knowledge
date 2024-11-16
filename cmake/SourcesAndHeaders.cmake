@@ -4,7 +4,6 @@ set(sources
 )
 
 set(exe_sources
-		src/memoryAccess.cpp
 		${sources}
 )
 
