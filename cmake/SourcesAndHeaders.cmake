@@ -12,24 +12,28 @@ set(headers
 )
 
 set(test_sources
-  src/lock_free_pool.cpp
-  src/limiter.cpp
-  src/tmp_test.cpp
+  # app
+  src/app/limiter.cpp
+  src/app/lock_free_pool.cpp
+  src/app/mysql_test.cpp
+  # concurrency
+  src/concurrency/atomic_test.cpp
+  src/concurrency/future_test.cpp
+  src/concurrency/lock_test.cpp
+  # c
+  src/c/c_lib_test.cpp
+  src/c/c_test.cpp
+  src/c/string_test.cpp
+  # pointer
+  src/pointer/raii_test.cpp
+  src/pointer/reference_test.cpp
+  # basic
   src/basic_test.cpp
   src/oop_test.cpp
   src/lambda_test.cpp
   src/vector_test.cpp
   src/containers_test.cpp
-  src/raii_test.cpp
-  src/concurrency_test.cpp
-  src/reference_test.cpp
-  src/c_lib_test.cpp
-  src/c_test.cpp
   src/templated_test.cpp
-  src/mysql_test.cpp
-  src/string_test.cpp
   src/class_test.cpp
-  src/lock_test.cpp
-  src/atomic_test.cpp
   src/lifetime_test.cpp
 )
