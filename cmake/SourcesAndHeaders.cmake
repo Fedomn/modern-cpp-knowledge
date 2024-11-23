@@ -27,13 +27,15 @@ set(test_sources
   # pointer
   src/pointer/raii_test.cpp
   src/pointer/reference_test.cpp
+  # type
+  src/type/templated_test.cpp
+  src/type/typestate_test.cpp
   # basic
   src/basic_test.cpp
   src/oop_test.cpp
   src/lambda_test.cpp
   src/vector_test.cpp
   src/containers_test.cpp
-  src/templated_test.cpp
   src/class_test.cpp
   src/lifetime_test.cpp
 )
