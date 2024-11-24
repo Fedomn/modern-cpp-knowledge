@@ -28,9 +28,9 @@ class HTTPConnectionBuilder {
     return HTTPConnection(std::move(headers_), std::move(body_));
   }
 
+ private:
   HTTPConnectionBuilder() = default;
 
- private:
   template<HTTPBuilderState>
   friend class ::HTTPConnectionBuilderWrapper;
 
@@ -75,11 +75,27 @@ static HTTPConnectionBuilderWrapper<HTTPBuilderState::START> GetConnectionBuilde
   return {};
 }
 
+/*
+  https://www.fluentcpp.com/2019/09/24/expressive-code-for-state-machines-in-cpp/
+
+  Note that the methods can only be called on r-values (std::move, that’s the role of the trailing “&&” in the function
+  declaration). Why so? It enforces the destruction of the previous state, so you only get the relevant state. Think about it
+  like a unique_ptr: you don’t want to copy the internals and get an invalid state. Just like there should be a single owner
+  for a unique_ptr, there should be a single state for a typestate.
+*/
 TEST(TypeState, HelloWorld) {
   auto builder = GetConnectionBuilder();
   auto builder2 = std::move(builder).add_header("h1").add_header("h2");
-  auto res = std::move(builder2).add_body("b1").build();
-  std::cout << "body is: " << std::get<1>(res) << '\n';
+  auto builder3 = std::move(builder2).add_body("b1");
+  std::cout << "num_headers: " << builder3.num_headers() << '\n';
+
+  auto res = std::move(builder3).build();
+  auto [headers, body] = res;
+  std::cout << "body is: " << body << '\n';
+  std::cout << "header size: " << headers.size() << '\n';
+  for (auto h : headers) {
+    std::cout << "header : " << h << '\n';
+  }
 
   // This doesn't compile:
   // GetConnectionBuilder().add_body("Body");
