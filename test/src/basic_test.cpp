@@ -269,3 +269,18 @@ TEST(BasicTest, PlacementNew) // NOLINT
   e->~Element();
   delete[] buf;
 }
+
+TEST(BasicTest, TimeSteadyClock) // NOLINT
+{
+  auto now = std::chrono::steady_clock::now();
+  auto t1 = std::chrono::seconds(10);
+  auto t2 = std::chrono::seconds(15);
+  auto t3 = t2 - t1;
+  ASSERT_EQ(t3.count(), 5);
+  ASSERT_TRUE(t3 > std::chrono::seconds(1));
+
+  auto w_ms = std::chrono::milliseconds{ 3600 };
+  auto w_cnt = static_cast<uint64_t>(std::chrono::duration_cast<std::chrono::milliseconds>(w_ms).count());
+  ASSERT_EQ(w_cnt, 3600);
+  ASSERT_TRUE(t3 > w_ms);
+}
