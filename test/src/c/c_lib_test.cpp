@@ -30,4 +30,14 @@ TEST(CLibTest, PrintString)
   printf("%.*s\n", length, str);  // 输出: Hello
 }
 
+TEST(CLibTest, StringCopy) {
+  char* s = new char[100];
+  strcpy(s, "hello");
+  printf("%s\n", s);
+  *s = '\0';
+  printf("%s, len: %d\n", s, strlen(s));
+  strcpy(s, "Hello, World!");
+  printf("%s\n", s);
+}
+
 // NOLINTEND
