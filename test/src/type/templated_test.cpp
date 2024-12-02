@@ -122,4 +122,82 @@ TEST(TemplatedTest, TemplateMemberFunctionTest) {
   d.callProcess();
 }
 
+// Forward declaration
+template<typename Event, typename State, typename... States>
+struct TransitionTrait;
+
+// State machine definition
+template<typename... States>
+class StateMachine {
+ public:
+  using StateVarint = std::variant<States...>;
+  template<typename State>
+  explicit StateMachine(State&& initial) : current_state_(std::forward<State>(initial)) {
+  }
+
+  template<typename Event>
+  void handle_event(const Event& event) {
+    current_state_ = std::visit(
+        [&event](auto& state) -> StateVarint {
+          return TransitionTrait<Event, std::decay_t<decltype(state)>, States...>::next(event, state);
+        },
+        current_state_);
+  }
+
+  template<typename F>
+  auto visit(F&& f) {
+    return std::visit(std::forward<F>(f), current_state_);
+  }
+
+ private:
+  StateVarint current_state_;
+};
+
+// Base trait with default behavior
+template<typename Event, typename State, typename... States>
+struct TransitionTrait {
+  static std::variant<States...> next(const Event&, const State& state) {
+    return state;
+  }
+};
+struct Red {
+  std::string msg = "stop";
+};
+struct Yellow {
+  std::string msg = "ready";
+};
+struct Green {
+  std::string msg = "go";
+};
+struct TimerExpired { };
+using TrafficLight = StateMachine<Red, Yellow, Green>;
+
+template<typename... States>
+struct TransitionTrait<TimerExpired, Red, States...> {
+  static std::variant<States...> next(const TimerExpired&, const Red&) {
+    return Green{};
+  }
+};
+template<typename... States>
+struct TransitionTrait<TimerExpired, Green, States...> {
+  static std::variant<States...> next(const TimerExpired&, const Green&) {
+    return Yellow{};
+  }
+};
+template<typename... States>
+struct TransitionTrait<TimerExpired, Yellow, States...> {
+  static std::variant<States...> next(const TimerExpired&, const Yellow&) {
+    return Red{};
+  }
+};
+
+TEST(TemplatedTest, StateMachineTest) {
+  TrafficLight sm(Red{});
+
+  for (int i = 0; i < 7; ++i) {
+    sm.visit([](const auto& state) { std::cout << state.msg << std::endl; });
+    sm.handle_event(TimerExpired{});
+  }
+}
+
 // NOLINTEND
