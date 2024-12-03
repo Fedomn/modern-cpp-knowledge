@@ -38,6 +38,17 @@ TEST(CLibTest, StringCopy) {
   printf("%s, len: %d\n", s, strlen(s));
   strcpy(s, "Hello, World!");
   printf("%s\n", s);
+
+  char* s2 = "2:3-1684479283-9";
+  int pos1 = 1, pos2 = 3, pos3 = 14, pos4 = 16;
+  char* end1 = s2 + pos1;
+  ASSERT_EQ(2, strtol(s2, &end1, 10));
+  char* end2 = s2 + pos2;
+  ASSERT_EQ(3, strtol(end1 + 1, &end2, 10));
+  char* end3 = s2 + pos3;
+  ASSERT_EQ(1684479283, strtol(end2 + 1, &end3, 10));
+  char* end4 = s2 + pos4;
+  ASSERT_EQ(9, strtol(end3 + 1, &end4, 10));
 }
 
 // NOLINTEND

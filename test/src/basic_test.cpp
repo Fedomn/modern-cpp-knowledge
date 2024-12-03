@@ -284,3 +284,23 @@ TEST(BasicTest, TimeSteadyClock) // NOLINT
   ASSERT_EQ(w_cnt, 3600);
   ASSERT_TRUE(t3 > w_ms);
 }
+
+TEST(BasicTest, StructAtomic)  // NOLINT
+{
+  struct T {
+    uint64_t a;
+  };
+  std::atomic<T> b{};
+
+  auto v1 = T{ 1 };
+  T* p = &v1;
+  b.store(v1);
+  (*p).a = 2;
+
+  auto v = b.load();
+  ASSERT_EQ(v1.a, 2);
+  ASSERT_EQ(v.a, 1);
+
+  std::cout << &v1 << std::endl;
+  std::cout << &v << std::endl;
+}
