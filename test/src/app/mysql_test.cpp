@@ -74,8 +74,12 @@ TEST(MySQLTest, Const)  // NOLINT
 
 #define UINT_MAX32 0xFFFFFFFFL // NOLINT
 
+#define lock_t ib_lock_t
+struct lock_t;
 TEST(MySQLTest, BIT)  // NOLINT
 {
+  lock_t *lock = nullptr;
+
   EXPECT_EQ(UINT32_MAX, 4294967295U);
   EXPECT_EQ(UINT32_MAX, (1ULL << 32) - 1);
   EXPECT_EQ(UINT32_MAX + 1, 0);

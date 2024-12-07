@@ -289,6 +289,7 @@ TEST(BasicTest, StructAtomic)  // NOLINT
 {
   struct T {
     uint64_t a;
+    // 在加一个变量则无法再使用 store 和 load 了
   };
   std::atomic<T> b{};
 

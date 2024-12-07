@@ -102,4 +102,49 @@ TEST(CTest, DynamicAllocationTest)
   free(intVec);
 }
 
+// memset struct
+TEST(BasicTest, StructMemset) {
+  struct A {
+    uint64_t a1;
+    uint64_t a2;
+  };
+  struct B {
+    uint64_t b1;
+    uint64_t b2;
+  };
+  struct T {
+    uint64_t c;
+    uint64_t d;
+    union {
+      A a;
+      B b;
+    };
+  };
+  // T 之后分配一个 uint64_t 的空间
+  T* ptr = static_cast<T*>(malloc(sizeof(T) + sizeof(uint64_t)));
+  ptr->c = 1;
+  ptr->b.b1 = 2;
+  ASSERT_EQ(ptr->c, 1);
+  ASSERT_EQ(ptr->d, 0);
+  ASSERT_EQ(ptr->a.a1, 2);
+  ASSERT_EQ(ptr->b.b1, 2);
+
+  // &ptr[0] 代表 T 类型自己的地址
+  memset(&ptr[0], 0, sizeof(T));
+  ASSERT_EQ(ptr->c, 0);
+  ASSERT_EQ(ptr->a.a1, 0);
+  ASSERT_EQ(ptr->b.b1, 0);
+
+  // &ptr[1] 代表 T 地址结尾的位置
+  uint64_t* v = (uint64_t*)&ptr[1];
+  *v = 10;
+  uint64_t* v2 = new uint64_t;
+  memcpy(v2, v, sizeof(uint64_t));
+  ASSERT_EQ(*v2, 10);
+  // reset the uint64_t
+  memset(&ptr[1], 0, sizeof(uint64_t));
+  uint64_t* v3 = (uint64_t*)&ptr[1];
+  ASSERT_EQ(*v3, 0);
+}
+
 // NOLINTEND
