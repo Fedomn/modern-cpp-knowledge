@@ -24,6 +24,8 @@ set(test_sources
   src/c/c_lib_test.cpp
   src/c/c_test.cpp
   src/c/string_test.cpp
+  # graph
+  src/graph/dag_test.cpp
   # pointer
   src/pointer/raii_test.cpp
   src/pointer/reference_test.cpp

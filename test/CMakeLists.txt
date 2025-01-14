@@ -55,6 +55,16 @@ foreach(file ${test_sources})
       ${DYNAMIC_LIB}
       ${${CMAKE_PROJECT_NAME}_TEST_LIB}
       )
+      if(${file} MATCHES ".*graph.*")
+        target_link_libraries(
+          ${test_name}_Tests
+          PUBLIC
+          boost_graph
+          boost_json
+          ${DYNAMIC_LIB}
+          ${${CMAKE_PROJECT_NAME}_TEST_LIB}
+          )
+      endif()
   elseif(${CMAKE_PROJECT_NAME}_USE_CATCH2)
     find_package(Catch2 REQUIRED)
     target_link_libraries(
