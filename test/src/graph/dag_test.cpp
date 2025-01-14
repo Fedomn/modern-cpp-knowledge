@@ -18,6 +18,7 @@ struct Vertex {
   uint64_t source = 0;
   uint64_t target = 0;
   uint64_t id = 0;
+  uint64_t in_degree = 0;
 };
 typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS, Vertex> Graph;
 typedef boost::graph_traits<Graph>::vertex_descriptor GraphVertexDescriptor;
@@ -98,11 +99,20 @@ class label_writer {
   Graph* g_;
 };
 
+void init_degree(Graph& g) {
+  for (auto [i, end] = boost::vertices(g); i != end; ++i) {
+    GraphDegreeSizeType in_degree = boost::in_degree(*i, g);
+    boost::get(boost::vertex_bundle, g, *i).in_degree = in_degree;
+  }
+}
+
 void print_degree(Graph& g) {
   for (auto [i, end] = boost::vertices(g); i != end; ++i) {
-    std::cout << "id: " << boost::get(boost::vertex_bundle, g, *i).id;
+    auto v = boost::get(boost::vertex_bundle, g, *i);
+    std::cout << "id: " << v.id;
     GraphDegreeSizeType in_degree = boost::in_degree(*i, g);
     std::cout << " in_degree " << in_degree << ",";
+    std::cout << " custom_degree " << v.in_degree << ",";
     GraphDegreeSizeType out_degree = boost::out_degree(*i, g);
     std::cout << " out_degree " << out_degree << std::endl;
   }
@@ -199,6 +209,8 @@ TEST(DAGTest, Test1) {
   std::cout << std::endl;
 
   // degree
+  // print_degree(g);
+  init_degree(g);
   print_degree(g);
 
   // children
@@ -245,4 +257,110 @@ TEST(DAGTest, Test1) {
   print_successors(g, index_map[2]);
   print_successors(g, index_map[3]);
   print_successors(g, index_map[4]);
+}
+
+class Scheduler {
+ public:
+  void init(Graph& g) {
+    zero_in_degree_vertices.clear();
+    non_zero_in_degree_vertices.clear();
+    for (auto [i, end] = boost::vertices(g); i != end; ++i) {
+      auto v = boost::get(boost::vertex_bundle, g, *i);
+      if (v.in_degree == 0) {
+        zero_in_degree_vertices.push_back(*i);
+      } else {
+        non_zero_in_degree_vertices.push_back(*i);
+      }
+    }
+    build_graph_index_map(g, index_map);
+  }
+
+  void debug() {
+    // debug zero_in_degree_vertices
+    std::cout << "zero_in_degree_vertices: ";
+    for (auto v : zero_in_degree_vertices) {
+      std::cout << v << " ";
+    }
+    std::cout << std::endl;
+    // debug non_zero_in_degree_vertices
+    std::cout << "non_zero_in_degree_vertices: ";
+    for (auto v : non_zero_in_degree_vertices) {
+      std::cout << v << " ";
+    }
+    std::cout << std::endl;
+  }
+
+  Vertex poll(Graph& g) {
+    auto v = zero_in_degree_vertices.front();
+    zero_in_degree_vertices.erase(zero_in_degree_vertices.begin());
+    auto v2 = boost::get(boost::vertex_bundle, g, v);
+    return v2;
+  }
+
+  void poll_batch(Graph& g, std::vector<Vertex>& res) {
+    res.clear();
+    while (!zero_in_degree_vertices.empty()) {
+      auto v = poll(g);
+      res.push_back(v);
+    }
+    // debug();
+  }
+
+  void mark_done(Graph& g, GraphVertexDescriptor vd) {
+    for (auto [i, end] = boost::out_edges(vd, g); i != end; ++i) {
+      auto& target = boost::get(boost::vertex_bundle, g, boost::target(*i, g));
+      target.in_degree--;
+      if (target.in_degree == 0) {
+        zero_in_degree_vertices.push_back(index_map[target.id]);
+        non_zero_in_degree_vertices.erase(
+            std::find(non_zero_in_degree_vertices.begin(), non_zero_in_degree_vertices.end(), index_map[target.id]));
+      }
+    }
+  }
+
+  void print_batch(Graph& g) {
+    std::vector<Vertex> batch;
+    uint64_t cnt = 1;
+    while (true) {
+      poll_batch(g, batch);
+      if (batch.empty()) {
+        break;
+      }
+      std::cout << "batch " << cnt << " got id: ";
+      for (auto v : batch) {
+        std::cout << v.id << " ";
+        mark_done(g, index_map[v.id]);
+      }
+      std::cout << std::endl;
+      batch.clear();
+      cnt++;
+    }
+  }
+
+  std::vector<GraphVertexDescriptor> zero_in_degree_vertices;
+  std::vector<GraphVertexDescriptor> non_zero_in_degree_vertices;
+  GraphIndexMap index_map;
+};
+
+TEST(DAGTest, Test2) {
+  Graph g;
+  Vertex d1{ 1, 1, 1 };
+  Vertex d2{ 2, 2, 2 };
+  Vertex d3{ 3, 3, 3 };
+  Vertex d4{ 4, 4, 4 };
+  GraphVertexDescriptor v1 = boost::add_vertex(d1, g);
+  GraphVertexDescriptor v2 = boost::add_vertex(d2, g);
+  GraphVertexDescriptor v3 = boost::add_vertex(d3, g);
+  GraphVertexDescriptor v4 = boost::add_vertex(d4, g);
+  boost::add_edge(v1, v2, g);
+  boost::add_edge(v1, v3, g);
+  boost::add_edge(v3, v4, g);
+  boost::add_edge(v2, v4, g);
+  init_degree(g);
+  visualize(g);
+
+  Scheduler s{};
+  s.init(g);
+
+  s.print_batch(g);
 }
