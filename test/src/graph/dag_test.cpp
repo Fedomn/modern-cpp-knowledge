@@ -15,8 +15,6 @@
 // https://www.boost.org/doc/libs/1_83_0/libs/graph/doc/file_dependency_example.html#sec:cycles
 // https://www.boost.org/doc/libs/1_77_0/libs/graph/doc/bundles.html
 struct Vertex {
-  uint64_t source = 0;
-  uint64_t target = 0;
   uint64_t id = 0;
   uint64_t in_degree = 0;
 };
@@ -68,7 +66,7 @@ void from_json(BidirectionalGraph& g, std::string& json_str, std::map<uint64_t, 
   boost::json::object json_obj = boost::json::parse(json_str).as_object();
   std::map<uint64_t, GraphVertexDescriptor> index_map;
   for (const auto& [key, value] : json_obj) {
-    uint64_t k = std::stoll(key);
+    uint64_t k = std::strtoull(key.data(), nullptr, 10);
     if (index_map.find(k) == index_map.end()) {
       index_map[k] = boost::add_vertex(vertex_map[k], g);
     }
@@ -184,10 +182,10 @@ void print_successors(Graph& g, GraphVertexDescriptor v) {
 
 TEST(DAGTest, Test1) {
   Graph g;
-  Vertex d1{ 1, 1, 1 };
-  Vertex d2{ 2, 2, 2 };
-  Vertex d3{ 3, 3, 3 };
-  Vertex d4{ 4, 4, 4 };
+  Vertex d1{ 1, 0 };
+  Vertex d2{ 2, 0 };
+  Vertex d3{ 3, 0 };
+  Vertex d4{ 4, 0 };
   std::map<uint64_t, Vertex> vertex_map;
   vertex_map[d1.id] = d1;
   vertex_map[d2.id] = d2;
@@ -344,10 +342,10 @@ class Scheduler {
 
 TEST(DAGTest, Test2) {
   Graph g;
-  Vertex d1{ 1, 1, 1 };
-  Vertex d2{ 2, 2, 2 };
-  Vertex d3{ 3, 3, 3 };
-  Vertex d4{ 4, 4, 4 };
+  Vertex d1{ 1, 0 };
+  Vertex d2{ 2,0 };
+  Vertex d3{ 3,0 };
+  Vertex d4{ 4,0 };
   GraphVertexDescriptor v1 = boost::add_vertex(d1, g);
   GraphVertexDescriptor v2 = boost::add_vertex(d2, g);
   GraphVertexDescriptor v3 = boost::add_vertex(d3, g);
