@@ -6,6 +6,7 @@
 #include <boost/graph/reverse_graph.hpp>
 #include <boost/graph/topological_sort.hpp>
 #include <boost/json.hpp>
+#include <boost/graph/copy.hpp>
 
 #include "boost/graph/graphviz.hpp"
 
@@ -255,6 +256,12 @@ TEST(DAGTest, Test1) {
   print_successors(g, index_map[2]);
   print_successors(g, index_map[3]);
   print_successors(g, index_map[4]);
+
+  // copy graph
+  Graph gg;
+  boost::copy_graph(g, gg);
+  out_json = to_json(gg);
+  std::cout << "out_json: " << out_json << std::endl;
 }
 
 class Scheduler {
