@@ -1,13 +1,29 @@
 {
-    "search.exclude": {
-        "**/build": true,
-        "**/deps": true,
-    },
-    "clangd.arguments": [
-		"--header-insertion=never",
+	"search.exclude": {
+		"**/build": true,
+		"**/deps": true,
+	},
+	"clangd.path": "/data/tools/llvm/bin/clangd",
+	"clangd.arguments": [
+		// "--log=verbose",
+		"--pretty",
+		"--all-scopes-completion",
+		"--completion-style=detailed",
+		"--cross-file-rename",
+		"--header-insertion=iwyu",
+		"--header-insertion-decorators",
+		// "--header-insertion=never",
+		"--background-index",
 		"--limit-references=0",
+		"--clang-tidy",
+		"--clang-tidy-checks=cppcoreguidelines-*,performance-*,bugprone-*,portability-*,modernize-*,google-*",
+		"-j=30",
+		"--pch-storage=memory",
+		// "--function-arg-placeholders=false",
+		"--query-driver=/opt/rh/gcc-toolset-10/root/usr/bin/gcc",
+		"--compile-commands-dir=${workspaceFolder}/build",
 	],
-    "search.useIgnoreFiles": false,
-    "cmake.configureOnOpen": false,
-    "cmake.buildBeforeRun": false,
+	"search.useIgnoreFiles": false,
+	"cmake.configureOnOpen": false,
+	"cmake.buildBeforeRun": false,
 }

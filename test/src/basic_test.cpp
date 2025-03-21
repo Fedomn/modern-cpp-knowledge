@@ -194,9 +194,9 @@ TEST(BasicTest, DecltypeAutoTest)  // NOLINT
   // The decltype(auto) type-specifier also deduces a type like auto does. However, it deduces return types while keeping
   // their references and cv-qualifiers, while auto will not.
   int const x = 123;
-  static_assert(!std::is_same<const int&, decltype(f(x))>::value);
-  static_assert(std::is_same<int, decltype(f(x))>::value);
-  static_assert(std::is_same<const int&, decltype(g(x))>::value);
+  static_assert(!std::is_same_v<const int&, decltype(f(x))>);
+  static_assert(std::is_same_v<int, decltype(f(x))>);
+  static_assert(std::is_same_v<const int&, decltype(g(x))>);
 }
 
 void testBoolRef(bool& a)
