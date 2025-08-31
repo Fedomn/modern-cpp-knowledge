@@ -9,6 +9,8 @@ init:
 	git clone https://github.com/adah1972/geek_time_cpp.git resources/geek_time_cpp
 	git clone https://github.com/sftrabbit/CppPatterns-Patterns.git resources/CppPatterns-Patterns
 	git clone https://github.com/downdemo/Cpp-Concurrency-in-Action-2ed.git resources/Cpp-Concurrency-in-Action-2ed
+	git clone https://github.com/facebook/folly.git resources/folly
+	git clone https://github.com/facebook/rocksdb.git resources/rocksdb
 
 deps:
 	git clone https://github.com/google/googletest.git --branch release-1.11.0 deps/googletest
