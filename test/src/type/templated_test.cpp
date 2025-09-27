@@ -200,4 +200,27 @@ TEST(TemplatedTest, StateMachineTest) {
   }
 }
 
+// CRTP 奇异递归模板模式 - 派生类作为模板参数传递给基类
+// - 通过 CRTP 基类可以调用派生类重载的接口，类似虚函数但无运行时开销。
+// - 允许基类模板实现针对派生类的公共逻辑，避免在派生类重复写代码。
+template<typename Derived2>
+class Base2 {
+ public:
+  void interface() {
+    static_cast<Derived2*>(this)->implementation();
+  }
+};
+
+class Derived2 : public Base2<Derived2> {
+ public:
+  void implementation() {
+    std::cout << "Derived implementation\n";
+  }
+};
+
+TEST(TemplatedTest, CRTP) {
+  Derived2 d;
+  d.interface();
+}
+
 // NOLINTEND
