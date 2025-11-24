@@ -28,7 +28,7 @@ TEST(LambdaTest, LambdaMoveCapture)  // NOLINT
 
 TEST(LambdaTest, LambdaGeneric)  // NOLINT
 {
-  auto generic = [](auto x, auto y) { return x + y; };
+  auto generic = [](const auto& x, const auto& y) { return x + y; };
   EXPECT_EQ(generic(1, 2), 3);
   EXPECT_EQ(generic(1.1, 2), 3.1);
   EXPECT_EQ(generic(std::string("1"), std::string("2")), "12");
@@ -57,4 +57,47 @@ auto sum(Args... args)
 TEST(LambdaTest, VaArg)  // NOLINT
 {
   EXPECT_EQ(sum(3, 1, 2, 3), 9);
+}
+
+class CmdGuard {
+ public:
+  template<class... Args>
+  void Block(Args&&... cmds) {
+    (blocked_commands_.insert(std::forward<Args>(cmds)), ...);
+  }
+
+  template<class... Args>
+  void Unblock(Args&&... cmds) {
+    (blocked_commands_.erase(std::forward<Args>(cmds)), ...);
+    // 逗号折叠表达式
+    // blocked_commands_.erase(std::forward<Args>(cmd1)),
+    // blocked_commands_.erase(std::forward<Args>(cmd2)),
+    // blocked_commands_.erase(std::forward<Args>(cmd3))
+  }
+
+  auto IsBlocked(uint32_t cmd) -> bool {
+    return blocked_commands_.find(cmd) != blocked_commands_.end();
+  }
+
+  void UnblockAll() {
+    blocked_commands_.clear();
+  }
+
+ private:
+  std::set<uint32_t> blocked_commands_;
+};
+
+TEST(CmdGuardTest, BlockAndUnblock)  // NOLINT
+{
+  CmdGuard guard;
+  guard.Block(1, 2, 3);
+  EXPECT_TRUE(guard.IsBlocked(1));
+  EXPECT_TRUE(guard.IsBlocked(2));
+  EXPECT_TRUE(guard.IsBlocked(3));
+  guard.Unblock(1, 2);
+  EXPECT_FALSE(guard.IsBlocked(1));
+  EXPECT_FALSE(guard.IsBlocked(2));
+  EXPECT_TRUE(guard.IsBlocked(3));
+  guard.Unblock(1);
+  guard.Unblock(4);
 }
