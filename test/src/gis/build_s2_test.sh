@@ -12,6 +12,6 @@ build_dir="${S2_TEST_BUILD_DIR:-${repo_root}/build}"
 # S2 tests build together with the other unit tests, so an existing build
 # directory keeps its compiler and switches.
 cmake -S "${repo_root}" -B "${build_dir}" -DCMAKE_BUILD_TYPE=Debug
-cmake --build "${build_dir}" --target s2_covering_test --parallel "${S2_TEST_JOBS:-4}"
+cmake --build "${build_dir}" --target gis_test --parallel "${S2_TEST_JOBS:-4}"
 
-exec "${build_dir}/test/src/gis/s2_covering_test" "$@"
+exec "${build_dir}/test/src/gis/gis_test" "$@"

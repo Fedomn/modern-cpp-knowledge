@@ -3,6 +3,7 @@
 测试使用 `(经度, 纬度)`，单位为度，例如 `(120.5, 30.5)`。
 `PointFromLngLat(lng, lat)` 内部调用 `S2LatLng::FromDegrees(lat, lng).ToPoint()`。
 S2、Abseil 和 GoogleTest 均从本仓库 `deps` 中的上游源码编译。
+Boost 也来自 `deps`，但只用头文件：`mysql_point_mbr_test.cpp` 复现 MySQL 的 MBR 计算时依赖 Boost.Geometry。
 
 `MakeBox(west_lng, south_lat, east_lng, north_lat)` 以四个经纬度角点构造 Polygon。
 基准面 A 的角点为 `(120,30)`、`(121,30)`、`(121,31)`、`(120,31)`；
@@ -41,7 +42,7 @@ S2 测试是单测的一部分，首次配置需要 `make deps` 的全部源码�
 `make deps-s2` 只下载缺失的目录，可以重复执行；现有源码目录不会被重置，
 便于直接修改 S2 源码进行实验。
 
-一条命令构建并运行全部 9 个用例：
+一条命令构建并运行全部 12 个用例（同一个 `gis_test` 目标）：
 
 ```bash
 bash test/src/gis/build_s2_test.sh
@@ -69,8 +70,8 @@ CC=gcc CXX=g++ S2_TEST_BUILD_DIR=/tmp/s2-debug S2_TEST_JOBS=8 \
 构建后可直接运行二进制或 CTest：
 
 ```bash
-./build/test/src/gis/s2_covering_test --gtest_list_tests
-./build/test/src/gis/s2_covering_test --gtest_filter=S2LatLngTest.CoveringsContainInteriorSamples
+./build/test/src/gis/gis_test --gtest_list_tests
+./build/test/src/gis/gis_test --gtest_filter=S2LatLngTest.CoveringsContainInteriorSamples
 ctest --test-dir build -R '^gis\.' --output-on-failure
 ```
 
@@ -78,11 +79,12 @@ ctest --test-dir build -R '^gis\.' --output-on-failure
 
 ## 只构建 S2
 
-`test/src/gis` 也可以单独配置，这条路径只需要 `make deps-s2`，不依赖 Boost/brpc：
+`test/src/gis` 也可以单独配置，这条路径只编 S2 和测试本身：Boost 只用头文件，不编 Boost 库，也不需要 brpc。
+S2 依赖来自 `make deps-s2`，Boost 源码树来自 `make deps`：
 
 ```bash
 cmake -S test/src/gis -B build/s2-only -DCMAKE_BUILD_TYPE=Debug
-cmake --build build/s2-only --target s2_covering_test --parallel 4
+cmake --build build/s2-only --target gis_test --parallel 4
 ctest --test-dir build/s2-only -R '^gis\.' --output-on-failure
 ```
 
@@ -152,3 +154,41 @@ prefix = 3768589017835032128
 
 测试把从整数解出的 face、level、child path、祖先和区间端点与 S2 API 对比，
 再从解码字段重建原始 ID，并检查 token/路径以及 cell 中心经纬度的往返转换。
+
+## MySQL 的 kPoint MBR 对照
+
+`mysql_point_mbr_test.cpp` 用 Boost.Geometry 复现 MySQL `sql/gis/mbr_utils.cc` 里 kPoint 的 MBR 计算：
+`cartesian_envelope()` 调 `bg::envelope(Cartesian_point, Cartesian_box)`（mbr_utils.cc:114），
+`geographic_envelope()` 调 `bg::envelope(Geographic_point, Geographic_box)` 且不传 andoyer 策略
+（mbr_utils.cc:197）。类型注册与 `sql/gis/geometries_traits.h` 一致：笛卡尔用 `cs::cartesian`，
+地理用 `cs::geographic<radian>`，所以地理坐标在内存里是弧度。
+
+该用例编在同一个 `gis_test` 目标里，直接用 Boost 头文件（`deps/boost`，由 `make deps` 拉取，不编 Boost 库）；
+缺 Boost 源码树时配置会直接报错：
+
+```bash
+cmake --build build --target gis_test --parallel 4
+./build/test/src/gis/gis_test --gtest_filter=MysqlPointMbrTest.*
+```
+
+`(120.5, 30.5)` 这个点在两种 CS 下拿到的都是 collapsed box，差别只在坐标单位与 CS 标记：
+
+| CS | 内存中的 MBR | 写入索引前 `from_radians()`（rtree_support.cc:392） |
+| --- | --- | --- |
+| `kCartesian` | min=(120.5, 30.5) max=(120.5, 30.5) | 不做转换，直接是 SRS 单位 |
+| `kGeographic` | min=(2.10312, 0.532325) max=(同上)，弧度 | 转回度 = min=(120.5, 30.5) max=(120.5, 30.5) |
+
+两种 CS 下 `mbr_is_point()` 都是 true，`mbr_is_line()` 和 `mbr_is_empty()` 都是 false。
+单点即使显式传 andoyer 策略，结果也是同一个 collapsed box，所以 kPoint 分支不传策略没有影响。
+
+kPolygon 就不同了：笛卡尔分支不传策略（mbr_utils.cc:119-121），地理分支要传 andoyer 策略
+（mbr_utils.cc:203-205）。`(0,45)-(90,45)-(90,55)-(0,55)` 这个经纬度"矩形"：
+
+| CS | MBR | 说明 |
+| --- | --- | --- |
+| `kCartesian` | min=(0, 45) max=(90, 55) | 环上顶点的包围盒 |
+| `kGeographic` | min=(0, 45) max=(90, 63.673209) | 北边大地线向北凸出，抬高上界纬度 |
+
+折线同理，`(0,45)-(90,45)` 的 MBR 上界纬度是 54.763085 度，高于端点纬度 45 度。
+
+加上这 5 个用例后，`gis_test` 里共 13 个用例（8 个 S2 + 5 个 MBR），`ctest -R '^gis\.'` 全部注册。

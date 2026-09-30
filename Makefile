@@ -74,7 +74,7 @@ test: ## run tests quickly with ctest
 
 #  --gtest_filter=S2CellIdEncodingTest.RealCellIdsAndFiveBitExample
 test-s2:
-	bash test/src/gis/build_s2_test.sh --gtest_filter=S2CellIdEncodingTest.RealCellIdsAndFiveBitExample
+	bash test/src/gis/build_s2_test.sh --gtest_filter=MysqlPointMbrTest.*
 
 coverage: ## check code coverage quickly GCC
 	rm -rf build/
