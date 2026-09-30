@@ -12,12 +12,23 @@ init:
 	git clone https://github.com/facebook/folly.git resources/folly
 	git clone https://github.com/facebook/rocksdb.git resources/rocksdb
 
-deps:
-	git clone https://github.com/google/googletest.git --branch release-1.11.0 deps/googletest
+deps: deps-s2
 	git clone --recurse-submodules https://github.com/boostorg/boost.git --branch boost-1.85.0 deps/boost
 	git clone https://github.com/apache/brpc.git --branch release-1.9 deps/brpc
 	git clone https://github.com/google/benchmark.git --branch v1.9.0 benchmark/deps/benchmark
 	git clone https://github.com/google/googletest.git --branch release-1.11.0 benchmark/deps/benchmark/googletest
+
+# S2 0.14.0 pins Abseil 20250814.1 for its own FETCH_ABSEIL build.
+deps-s2: deps/googletest deps/abseil-cpp deps/s2geometry ## fetch source dependencies for the S2 tests
+
+deps/googletest:
+	git clone https://github.com/google/googletest.git --branch release-1.11.0 --depth 1 $@
+
+deps/abseil-cpp:
+	git clone https://github.com/abseil/abseil-cpp.git --branch 20250814.1 --depth 1 $@
+
+deps/s2geometry:
+	git clone https://github.com/google/s2geometry.git --branch v0.14.0 --depth 1 $@
 
 build-gtest:
 	git clone https://github.com/google/googletest.git --branch release-1.11.0 deps/googletest
@@ -28,7 +39,7 @@ build-gtest:
 	brew install clang-format
 
 
-.PHONY: install coverage test docs help deps
+.PHONY: install coverage test docs help deps deps-s2 test-s2
 .DEFAULT_GOAL := help
 
 define PRINT_HELP_PYSCRIPT
@@ -60,6 +71,10 @@ test: ## run tests quickly with ctest
 	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION) -Dmcpp_ENABLE_UNIT_TESTING=1 -Dmcpp_ENABLE_ASAN=$(ENABLE_ASAN) -DCMAKE_BUILD_TYPE="Debug"
 	cmake --build build --config Debug -j`nproc`
 	cd build/ && $(ASAN_ENV) ctest -C Debug -VV
+
+#  --gtest_filter=S2CellIdEncodingTest.RealCellIdsAndFiveBitExample
+test-s2:
+	bash test/src/gis/build_s2_test.sh --gtest_filter=S2CellIdEncodingTest.RealCellIdsAndFiveBitExample
 
 coverage: ## check code coverage quickly GCC
 	rm -rf build/

@@ -89,4 +89,7 @@ foreach(file ${test_sources})
   )
 endforeach()
 
+# GIS tests are S2-based and build from deps/ instead of the file-per-test pattern.
+add_subdirectory(src/gis)
+
 verbose_message("Finished adding unit tests for ${CMAKE_PROJECT_NAME}.")

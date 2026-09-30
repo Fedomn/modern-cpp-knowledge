@@ -4,6 +4,7 @@ deps
 install
 .cache
 Testing
+.vscode/bookmarks.json
 
 # resources
 resources
